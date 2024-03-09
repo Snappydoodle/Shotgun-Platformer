@@ -50,7 +50,7 @@ mouseLeftClick={
 
 [physics]
 
-2d/default_gravity=1250.0
+2d/default_gravity=1000.0
 
 [rendering]
 

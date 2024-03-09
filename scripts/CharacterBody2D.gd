@@ -4,12 +4,13 @@ extends CharacterBody2D
 @export var speed : float = 300.0
 @export var jump_velocity : float = -400.0
 @export var double_jump_velocity : float = -300.0
-@export var max_double_jumps: float = 1
+@export var max_double_jumps: int = 1
 @export var launchMultiplier : float = 1000
-@export var airResistance : float = 1.03
+@export var airResistance : float = 1.015
 @export var groundResistance : float = 1.2
 @export var extraAirResistance : float = 1.02
-@export var extraAirResistanceThreshold : float = 750
+@export var wallBounciness : float = .065
+#@export var extraAirResistanceThreshold : float = 750
 
  #Your motherings
 
@@ -64,8 +65,8 @@ func _physics_process(delta):
 		velocityMovement.x = move_toward(velocity.x, 0, speed)
 	
 	addAirResistance(delta)
-	if is_on_wall():
-		velocityLaunch.x = 0
+	addWallBounce(delta)
+	
 	
 	velocity.x = velocityLaunch.x
 	#velocity.x = velocityMovement.x + velocityLaunch.x
@@ -91,6 +92,10 @@ func update_facing_direction():
 func jump():
 	velocity.y = jump_velocity
 	double_jumps = max_double_jumps
+
+func addWallBounce(delta):
+	if is_on_wall():
+		velocityLaunch.x *= wallBounciness * -1
 
 func mouseLeftClick(delta):
 	updateMousePosition()
