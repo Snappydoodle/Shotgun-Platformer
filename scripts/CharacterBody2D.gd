@@ -1,22 +1,24 @@
 extends CharacterBody2D
 
 
-@export var speed : float = 300.0
-@export var jump_velocity : float = -400.0
-@export var double_jump_velocity : float = -300.0
+@export var speed : float = 200.0
+@export var jump_velocity : float = -300.0
+@export var double_jump_velocity : float = -200.0
 @export var max_double_jumps: int = 1
-@export var launchMultiplier : float = 1000
+@export var launchMultiplier : float = 700
 @export var airResistance : float = 1.015
 @export var groundResistance : float = 1.2
-@export var extraAirResistance : float = 1.02
 @export var wallBounciness : float = .065
 #@export var extraAirResistanceThreshold : float = 750
 
  #Your motherings ssss read
 
 var double_jumps : int = 0
-var velocityMovement = Vector2(0,0)
 var velocityLaunch = Vector2(0,0)
+var beforedir : int = 0
+var acc = 10
+var walkvelocity :  Vector2 = Vector2.ZERO
+var acceleration : Vector2 = Vector2.ZERO
 var mousePosition = Vector2(0,0)
 var mousePlayerAngle : float = 0 #the angle between the mouse and the player
 
@@ -50,7 +52,7 @@ func _physics_process(delta):
 			
 		elif double_jumps > 0:
 			is_double_jumping = true
-			velocityMovement.y = double_jump_velocity
+			velocity.y = double_jump_velocity
 			double_jumps -= 1
 			
 	if Input.is_action_just_pressed("mouseLeftClick"):
@@ -59,18 +61,29 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	direction = Input.get_vector("left", "right", "up", "down")
-	if direction: #checks if input has been pressed
-		velocityMovement.x = direction.x * speed
-	else:
-		velocityMovement.x = move_toward(velocityMovement.x, 0, speed)
 	
+	if direction.x: #checks if input has been pressed
+		beforedir = direction.x
+		if direction.x == 1:
+			walkvelocity.x = min(walkvelocity.x + acc, speed)
+		else:
+			walkvelocity.x = max(walkvelocity.x - acc, -speed)
+	else:
+		if beforedir == 1:
+			walkvelocity.x = max(walkvelocity.x - acc*5, 0)
+		else:
+			walkvelocity.x = min(walkvelocity.x + acc*5, 0)
+		
+		
+		#velocity.x = move_toward(velocity.x, 0, speed)
+		pass
 	addAirResistance(delta)
 	addWallBounce(delta)
 	
 	
 	#velocity.x = velocityLaunch.x
-	velocity.x = velocityMovement.x + velocityLaunch.x
-	#velocity.y = velocityMovement.y + velocityLaunch.y
+	velocity.x = walkvelocity.x + velocityLaunch.x
+	#velocity.y = velocity.y + velocityLaunch.y
 	
 	update_animation()
 	update_facing_direction()
@@ -104,7 +117,6 @@ func mouseLeftClick(delta):
 
 func launchPlayer(delta):
 	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
-	print(velocityLaunch.x + velocity.y)
 	velocity.y = launchMultiplier * sin(mousePlayerAngle) * .75
 	
 func addAirResistance(delta):
