@@ -62,14 +62,14 @@ func _physics_process(delta):
 	if direction: #checks if input has been pressed
 		velocityMovement.x = direction.x * speed
 	else:
-		velocityMovement.x = move_toward(velocity.x, 0, speed)
+		velocityMovement.x = move_toward(velocityMovement.x, 0, speed)
 	
 	addAirResistance(delta)
 	addWallBounce(delta)
 	
 	
-	velocity.x = velocityLaunch.x
-	#velocity.x = velocityMovement.x + velocityLaunch.x
+	#velocity.x = velocityLaunch.x
+	velocity.x = velocityMovement.x + velocityLaunch.x
 	#velocity.y = velocityMovement.y + velocityLaunch.y
 	
 	update_animation()
