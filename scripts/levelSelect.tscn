@@ -18,3 +18,5 @@ offset_top = 105.0
 offset_right = 174.0
 offset_bottom = 136.0
 text = "test-level"
+
+[connection signal="pressed" from="testLevel" to="." method="_on_test_level_pressed"]

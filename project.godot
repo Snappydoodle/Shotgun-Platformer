@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="platformer (old)"
-run/main_scene="res://scripts/test_level.tscn"
+config/name="shotgun platformer"
+run/main_scene="res://scripts/levelSelect.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 

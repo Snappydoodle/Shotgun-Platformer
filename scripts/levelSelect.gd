@@ -9,3 +9,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+func enterLevel(levelName):
+	get_tree().change_scene_to_file(levelName)
+	return
+
+func _on_test_level_pressed():
+	enterLevel("res://scripts/test_level.tscn")
+	pass # Replace with function body.
