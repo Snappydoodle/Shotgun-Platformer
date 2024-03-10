@@ -2,10 +2,10 @@ extends CharacterBody2D
 
 
 @export var speed : float = 200.0
-@export var jump_velocity : float = -300.0
-@export var double_jump_velocity : float = -200.0
+@export var jump_velocity : float = -400.0
+@export var double_jump_velocity : float = -300.0
 @export var max_double_jumps: int = 1
-@export var launchMultiplier : float = 700
+@export var launchMultiplier : float = 1000
 @export var airResistance : float = 1.015
 @export var groundResistance : float = 1.2
 @export var wallBounciness : float = .065
@@ -16,7 +16,7 @@ extends CharacterBody2D
 var double_jumps : int = 0
 var velocityLaunch = Vector2(0,0)
 var beforedir : int = 0
-var acc = 10
+@export var acc = 20
 var walkvelocity :  Vector2 = Vector2.ZERO
 var acceleration : Vector2 = Vector2.ZERO
 var mousePosition = Vector2(0,0)
@@ -155,8 +155,14 @@ func processTilemapCollision(body, body_rid):
 	#for index in body:
 	var tileData = body.get_cell_tile_data(0, collidedTileCoords)
 	#print(tileData)
-	if tileData.get_custom_data_by_layer_id(0): #returns true if isDeadly is true
+	var interactableType = tileData.get_custom_data_by_layer_id(0) #returns value of custom metadata
+	if interactableType == "Deadly": 
 		print("die")
-	else:
-		print("not die")
+		death()
+	elif interactableType == "Spring":
+		print("boing")
+	pass
+
+func death():
+	get_tree().change_scene_to_file("res://scripts/test_level.tscn")
 	pass

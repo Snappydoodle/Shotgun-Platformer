@@ -106,6 +106,7 @@ texture = ExtResource("1_d5lu8")
 12:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 12:0/0/physics_layer_1/angular_velocity = 0.0
 12:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+12:0/0/custom_data_0 = "Spring"
 13:0/0 = 0
 13:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 13:0/0/physics_layer_0/angular_velocity = 0.0
@@ -982,7 +983,7 @@ texture = ExtResource("2_j0pk8")
 0:0/0/physics_layer_1/angular_velocity = 0.0
 0:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(-5, 4, 4, 4, 4, 6.5, -5, 6.5)
 0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_tmwc7")
-0:0/0/custom_data_0 = true
+0:0/0/custom_data_0 = "Deadly"
 
 [resource]
 physics_layer_0/collision_layer = 1
@@ -996,7 +997,7 @@ terrain_set_0/terrain_1/color = Color(0.445313, 0.628906, 0.113281, 1)
 terrain_set_0/terrain_2/name = "Deadly"
 terrain_set_0/terrain_2/color = Color(0.839216, 0.215686, 0, 1)
 navigation_layer_0/layers = 4
-custom_data_layer_0/name = "IsDeadly"
-custom_data_layer_0/type = 1
+custom_data_layer_0/name = "interactableType Type"
+custom_data_layer_0/type = 4
 sources/1 = SubResource("TileSetAtlasSource_esf2h")
 sources/2 = SubResource("TileSetAtlasSource_30as1")

@@ -1,4 +1,5 @@
 res://scripts/test_level.tscn
+res://scripts/CharacterBody2D.gd
 res://scripts/placeholder tiles.tres
 res://characters/player.tscn
-res://scripts/CharacterBody2D.gd
+res://scripts/levelSelect.tscn
