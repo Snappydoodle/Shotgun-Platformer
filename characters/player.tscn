@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dojx5yv13f6kl" path="res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Fall (32x32).png" id="3_68fjc"]
 [ext_resource type="Texture2D" uid="uid://jnxnptgqbprs" path="res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Run (32x32).png" id="4_ut0qn"]
 [ext_resource type="Texture2D" uid="uid://civio7ullmytv" path="res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Jump (32x32).png" id="5_aqw28"]
+[ext_resource type="Shape2D" uid="uid://q0nvthlif00t" path="res://scripts/playerHitbox.tres" id="7_10cky"]
+[ext_resource type="Shape2D" uid="uid://md4gjc7hbhgn" path="res://scripts/deathHitbox.tres" id="7_tvtty"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ni1w1"]
 atlas = ExtResource("2_24v4b")
@@ -252,13 +254,6 @@ animations = [{
 "speed": 24.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_37nee"]
-height = 25.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0i4i2"]
-radius = 5.0
-height = 15.0
-
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(300, 0)
 collision_layer = 2
@@ -273,15 +268,28 @@ offset = Vector2(-15, -15)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3.5)
-shape = SubResource("CapsuleShape2D_37nee")
+shape = ExtResource("7_10cky")
 
-[node name="deathDetection" type="Area2D" parent="."]
-collision_layer = 8
+[node name="DeathDetection" type="Area2D" parent="."]
+collision_layer = 2
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="deathDetection"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathDetection"]
 position = Vector2(0, 8)
-shape = SubResource("CapsuleShape2D_0i4i2")
+shape = ExtResource("7_tvtty")
 debug_color = Color(0.960784, 0, 0.521569, 0.419608)
 
-[connection signal="body_shape_entered" from="deathDetection" to="." method="_on_death_detection_body_shape_entered"]
+[node name="InteractableDetection" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractableDetection"]
+position = Vector2(0, 3.5)
+shape = ExtResource("7_10cky")
+debug_color = Color(0, 0.643137, 0.282353, 0.419608)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="body_shape_entered" from="DeathDetection" to="." method="_on_death_detection_body_shape_entered"]
+[connection signal="area_shape_entered" from="InteractableDetection" to="." method="_on_interactable_detection_area_shape_entered"]
+[connection signal="body_shape_entered" from="InteractableDetection" to="." method="_on_interactable_detection_body_shape_entered"]

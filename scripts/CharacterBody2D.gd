@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+signal goalTouched
 
 @export var speed : float = 200.0
 @export var jump_velocity : float = -400.0
@@ -12,6 +13,9 @@ extends CharacterBody2D
 #@export var extraAirResistanceThreshold : float = 750
 
  #Your motherings ssss read
+@onready var bulletsFired = get_node("/root/Node2D").bulletsFired
+@onready var timeElapsed = get_node("/root/Node2D").timeElapsed
+@onready var startTimer = get_node("/root/Node2D").startTimer
 
 var double_jumps : int = 0
 var velocityLaunch = Vector2(0,0)
@@ -30,6 +34,7 @@ var direction : Vector2 = Vector2.ZERO
 var is_double_jumping : bool = false
 
 func _physics_process(delta):
+	
 	# Add the gravity.
 	if is_on_floor():
 		animation_locked = false
@@ -47,6 +52,7 @@ func _physics_process(delta):
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("jump"):
+		startTimer = true
 		if is_on_floor():
 			jump()
 			
@@ -58,11 +64,10 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("mouseLeftClick"):
 		mouseLeftClick(delta)
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	direction = Input.get_vector("left", "right", "up", "down")
 	
 	if direction.x: #checks if input has been pressed
+		startTimer = true
 		beforedir = direction.x
 		if direction.x == 1:
 			walkvelocity.x = min(walkvelocity.x + acc, speed)
@@ -80,6 +85,8 @@ func _physics_process(delta):
 	addAirResistance(delta)
 	addWallBounce(delta)
 	
+	updateTimer(delta)
+	
 	
 	#velocity.x = velocityLaunch.x
 	velocity.x = walkvelocity.x + velocityLaunch.x
@@ -88,6 +95,10 @@ func _physics_process(delta):
 	update_animation()
 	update_facing_direction()
 	move_and_slide()
+func updateTimer(delta):
+	if startTimer:
+		get_node("/root/Node2D").timeElapsed = timeElapsed
+		timeElapsed += delta
 
 func update_animation():
 	if not animation_locked:
@@ -118,6 +129,9 @@ func mouseLeftClick(delta):
 func launchPlayer(delta):
 	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
 	velocity.y = launchMultiplier * sin(mousePlayerAngle) * .75
+	startTimer = true
+	bulletsFired += 1
+	get_node("/root/Node2D").bulletsFired = bulletsFired
 	
 func addAirResistance(delta):
 	airResistanceB(delta)
@@ -150,6 +164,11 @@ func _on_death_detection_body_shape_entered(body_rid, body, body_shape_index, lo
 	if body is TileMap:
 		processTilemapCollision(body, body_rid)
 
+func _on_interactable_detection_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	print("hi")
+	if body is TileMap:
+		processTilemapCollision(body, body_rid)
+	
 func processTilemapCollision(body, body_rid):
 	var collidedTileCoords = body.get_coords_for_body_rid(body_rid)
 	#for index in body:
@@ -165,4 +184,10 @@ func processTilemapCollision(body, body_rid):
 
 func death():
 	get_tree().change_scene_to_file("res://scripts/test_level.tscn")
-	pass
+
+
+func _on_interactable_detection_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
+	if area.is_in_group("GoalZone"):
+		goalTouched.emit()
+		print(area_rid)
+	pass # Replace with function body.

@@ -3,3 +3,4 @@ res://scripts/CharacterBody2D.gd
 res://scripts/placeholder tiles.tres
 res://characters/player.tscn
 res://scripts/levelSelect.tscn
+res://scripts/Level.gd
