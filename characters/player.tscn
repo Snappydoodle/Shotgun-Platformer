@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://c02osq4shmuds"]
+[gd_scene load_steps=41 format=3 uid="uid://c02osq4shmuds"]
 
 [ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_qtgwr"]
 [ext_resource type="Texture2D" uid="uid://dmfnkid3lksry" path="res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Double Jump (32x32).png" id="2_24v4b"]
@@ -255,8 +255,14 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_37nee"]
 height = 25.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0i4i2"]
+radius = 5.0
+height = 15.0
+
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(300, 0)
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_qtgwr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -268,3 +274,14 @@ offset = Vector2(-15, -15)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3.5)
 shape = SubResource("CapsuleShape2D_37nee")
+
+[node name="deathDetection" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="deathDetection"]
+position = Vector2(0, 8)
+shape = SubResource("CapsuleShape2D_0i4i2")
+debug_color = Color(0.960784, 0, 0.521569, 0.419608)
+
+[connection signal="body_shape_entered" from="deathDetection" to="." method="_on_death_detection_body_shape_entered"]

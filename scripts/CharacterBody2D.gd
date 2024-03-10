@@ -145,3 +145,18 @@ func airResistanceB(delta):
 func updateMousePosition():
 	mousePosition = get_global_mouse_position()
 	
+
+func _on_death_detection_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	if body is TileMap:
+		processTilemapCollision(body, body_rid)
+
+func processTilemapCollision(body, body_rid):
+	var collidedTileCoords = body.get_coords_for_body_rid(body_rid)
+	#for index in body:
+	var tileData = body.get_cell_tile_data(0, collidedTileCoords)
+	#print(tileData)
+	if tileData.get_custom_data_by_layer_id(0): #returns true if isDeadly is true
+		print("die")
+	else:
+		print("not die")
+	pass
