@@ -12,7 +12,7 @@ extends CharacterBody2D
 @export var wallBounciness : float = .065
 #@export var extraAirResistanceThreshold : float = 750
 
- #Your motherings
+ #Your motherings s
 
 var double_jumps : int = 0
 var velocityMovement = Vector2(0,0)
