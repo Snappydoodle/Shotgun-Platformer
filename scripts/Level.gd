@@ -10,9 +10,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print($GUI/timeElapsed.visible)
+	#print($GUI/timeElapsed.visible)
 	$GUI/timeElapsed.text = "Time Elapsed: " + str(snapped(timeElapsed, 0.01))
-	$GUI.position = $Level/Camera2D.position
+	
+	#$GUI.position.x = $Level/Camera2D.position.x - 640
+	#$GUI.position.y = $Level/Camera2D.position.y - 360
 	pass
 
 
@@ -26,3 +28,8 @@ func showGoalScreen():
 	$GUI/GoalScreen/BulletsFired.text = "Bullets Fired: " + str(bulletsFired)
 	$GUI/GoalScreen.visible = true
 	pass
+
+func _on_level_select_pressed():
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scripts/levelSelect.tscn")
+
