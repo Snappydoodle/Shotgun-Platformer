@@ -288,6 +288,10 @@ position = Vector2(0, 3.5)
 shape = ExtResource("7_10cky")
 debug_color = Color(0, 0.643137, 0.282353, 0.419608)
 
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="body_shape_entered" from="DeathDetection" to="." method="_on_death_detection_body_shape_entered"]
 [connection signal="area_shape_entered" from="InteractableDetection" to="." method="_on_interactable_detection_area_shape_entered"]
 [connection signal="body_shape_entered" from="InteractableDetection" to="." method="_on_interactable_detection_body_shape_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

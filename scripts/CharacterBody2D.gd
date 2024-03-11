@@ -10,6 +10,8 @@ signal goalTouched
 @export var airResistance : float = 1.015
 @export var groundResistance : float = 1.2
 @export var wallBounciness : float = .065
+@export var minSpringBounciness : float = 500
+@export var clickSpeed : float = 0.2
 #@export var extraAirResistanceThreshold : float = 750
 
  #Your motherings ssss read
@@ -33,8 +35,12 @@ var animation_locked : bool = false
 var direction : Vector2 = Vector2.ZERO
 var is_double_jumping : bool = false
 
+var clickBuffer : bool = false
+var canClick : bool = true
+var deltaGlobal : float = 0.00
+
 func _physics_process(delta):
-	
+	deltaGlobal = delta
 	# Add the gravity.
 	if is_on_floor():
 		animation_locked = false
@@ -62,9 +68,10 @@ func _physics_process(delta):
 			double_jumps -= 1
 			
 	if Input.is_action_just_pressed("mouseLeftClick"):
-		mouseLeftClick(delta)
+		mouseLeftClick()
 
 	direction = Input.get_vector("left", "right", "up", "down")
+	direction = Vector2(sign(direction.x), sign(direction.y))
 	
 	if direction.x: #checks if input has been pressed
 		startTimer = true
@@ -82,10 +89,10 @@ func _physics_process(delta):
 		
 		#velocity.x = move_toward(velocity.x, 0, speed)
 		pass
-	addAirResistance(delta)
-	addWallBounce(delta)
+	addAirResistance()
+	addWallBounce()
 	
-	updateTimer(delta)
+	updateTimer()
 	
 	
 	#velocity.x = velocityLaunch.x
@@ -95,10 +102,10 @@ func _physics_process(delta):
 	update_animation()
 	update_facing_direction()
 	move_and_slide()
-func updateTimer(delta):
+func updateTimer():
 	if startTimer:
 		get_node("/root/Node2D").timeElapsed = timeElapsed
-		timeElapsed += delta
+		timeElapsed += deltaGlobal
 
 func update_animation():
 	if not animation_locked:
@@ -117,24 +124,37 @@ func jump():
 	velocity.y = jump_velocity
 	double_jumps = max_double_jumps
 
-func addWallBounce(delta):
+func addWallBounce():
 	if is_on_wall():
+		print("wall")
 		velocityLaunch.x *= wallBounciness * -1
 
-func mouseLeftClick(delta):
-	updateMousePosition()
-	mousePlayerAngle = mousePosition.angle_to_point(position)
-	launchPlayer(delta)
+func mouseLeftClick():
+	if canClick:
+		updateMousePosition()
+		mousePlayerAngle = mousePosition.angle_to_point(position)
+		launchPlayer()
+		$Timer.start(clickSpeed)
+	else:
+		clickBuffer = true
 
-func launchPlayer(delta):
+func _on_timer_timeout():
+	if clickBuffer:
+		clickBuffer = false
+		launchPlayer()
+	else:
+		canClick = true
+	pass # Replace with function body.
+
+func launchPlayer():
 	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
 	velocity.y = launchMultiplier * sin(mousePlayerAngle) * .75
 	startTimer = true
 	bulletsFired += 1
 	get_node("/root/Node2D").bulletsFired = bulletsFired
 	
-func addAirResistance(delta):
-	airResistanceB(delta)
+func addAirResistance():
+	airResistanceB()
 	#if abs(velocityLaunch.x) >= extraAirResistanceThreshold:
 	#	velocityLaunch.x /= extraAirResistance
 	#if abs(velocity.y) >= extraAirResistanceThreshold:
@@ -142,15 +162,15 @@ func addAirResistance(delta):
 	#if (abs(velocityLaunch.x) + abs(velocity.y)) >= extraAirResistanceThreshold * 2:
 	#	return
 	
-func airResistanceA(delta):
-	if (velocityLaunch.x <= (airResistance * delta)) and (velocityLaunch.x >= (airResistance * delta * -1)):
+func airResistanceA():
+	if (velocityLaunch.x <= (airResistance * deltaGlobal)) and (velocityLaunch.x >= (airResistance * deltaGlobal * -1)):
 		velocityLaunch.x = 0
 	elif velocityLaunch.x > 0:
-		velocityLaunch.x -= airResistance * delta
+		velocityLaunch.x -= airResistance * deltaGlobal
 	else:
-		velocityLaunch.x += airResistance * delta
+		velocityLaunch.x += airResistance * deltaGlobal
 
-func airResistanceB(delta):
+func airResistanceB():
 	if is_on_floor():
 		velocityLaunch.x /= groundResistance
 	else:
@@ -165,7 +185,6 @@ func _on_death_detection_body_shape_entered(body_rid, body, body_shape_index, lo
 		processTilemapCollision(body, body_rid)
 
 func _on_interactable_detection_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	print("hi")
 	if body is TileMap:
 		processTilemapCollision(body, body_rid)
 	
@@ -178,8 +197,21 @@ func processTilemapCollision(body, body_rid):
 	if interactableType == "Deadly": 
 		print("die")
 		death()
-	elif interactableType == "Spring":
-		print("boing")
+	elif interactableType == "SpringRight":
+		print(collidedTileCoords)
+		print(position)
+		spring("Right")
+	elif interactableType == "SpringUp":
+		spring("Up")
+
+func spring(springDirection):
+	#print(velocityLaunch)
+	if springDirection == "Right":
+		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness)
+		#velocityLaunch.y += minSpringBounciness * 10
+	elif springDirection == "Up":
+		velocity.y = max(abs(velocity.y), minSpringBounciness)  * -1
+		print(velocity.y)
 	pass
 
 func death():
@@ -191,3 +223,6 @@ func _on_interactable_detection_area_shape_entered(area_rid, area, area_shape_in
 		goalTouched.emit()
 		print(area_rid)
 	pass # Replace with function body.
+
+
+

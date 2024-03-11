@@ -1,9 +1,9 @@
+Timer
 CanvasLayer
 RemoteTransform2D
 Node2D
 Button
 Label
-Timer
 ColorRect
 Control
 CollisionShape2D
