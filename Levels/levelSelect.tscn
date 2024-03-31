@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://bd4f2s5p56sn4"]
+
+[ext_resource type="Script" path="res://scripts/levelSelect.gd" id="1_x6mvi"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x6mvi")
+
+[node name="testLevel" type="Button" parent="."]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 105.0
+offset_right = 174.0
+offset_bottom = 136.0
+text = "test-level"
+
+[node name="Prototype1" type="Button" parent="."]
+layout_mode = 0
+offset_left = 335.0
+offset_top = 107.0
+offset_right = 414.0
+offset_bottom = 138.0
+text = "Level 1"
+
+[node name="Prototype2" type="Button" parent="."]
+layout_mode = 0
+offset_left = 579.0
+offset_top = 152.0
+offset_right = 658.0
+offset_bottom = 183.0
+text = "Level 2"
+
+[connection signal="pressed" from="testLevel" to="." method="_on_test_level_pressed"]
+[connection signal="pressed" from="Prototype1" to="." method="_on_prototype_1_pressed"]
+[connection signal="pressed" from="Prototype2" to="." method="_on_prototype_2_pressed"]
