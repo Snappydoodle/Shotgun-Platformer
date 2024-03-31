@@ -5,6 +5,7 @@ var timeElapsed : float = 0.0
 var startTimer : bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#print(get_node("."))
 	pass # Replace with function body.
 
 
@@ -29,7 +30,8 @@ func showGoalScreen():
 	$GUI/GoalScreen.visible = true
 	pass
 
-func _on_level_select_pressed():
+func _on_gui_level_select():
+	print("sdfdsf")
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scripts/levelSelect.tscn")
-
+	get_tree().change_scene_to_file("res://Levels/levelSelect.tscn")
+	pass # Replace with function body.

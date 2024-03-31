@@ -16,5 +16,15 @@ func enterLevel(levelName):
 	return
 
 func _on_test_level_pressed():
-	enterLevel("res://scripts/test_level.tscn")
+	enterLevel("res://Levels/test_level.tscn")
+	pass # Replace with function body.
+
+
+func _on_prototype_1_pressed():
+	enterLevel("res://Levels/Prototype1.tscn")
+	pass # Replace with function body.
+
+
+func _on_prototype_2_pressed():
+	enterLevel("res://Levels/Prototype2.tscn")
 	pass # Replace with function body.

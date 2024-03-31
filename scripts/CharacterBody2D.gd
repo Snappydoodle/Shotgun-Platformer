@@ -15,9 +15,11 @@ signal goalTouched
 #@export var extraAirResistanceThreshold : float = 750
 
  #Your motherings ssss read
+
 @onready var bulletsFired = get_node("/root/Node2D").bulletsFired
 @onready var timeElapsed = get_node("/root/Node2D").timeElapsed
 @onready var startTimer = get_node("/root/Node2D").startTimer
+@onready var Filepath = get_node("/root/Node2D").scene_file_path
 
 var double_jumps : int = 0
 var velocityLaunch = Vector2(0,0)
@@ -40,6 +42,7 @@ var canClick : bool = true
 var deltaGlobal : float = 0.00
 
 func _physics_process(delta):
+
 	deltaGlobal = delta
 	# Add the gravity.
 	if is_on_floor():
@@ -70,7 +73,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("mouseLeftClick"):
 		mouseLeftClick()
 
-	direction = Input.get_vector("left", "right", "up", "down")
+	#direction = Input.get_vector("left", "right", "up", "down")
 	direction = Vector2(sign(direction.x), sign(direction.y))
 	
 	if direction.x: #checks if input has been pressed
@@ -89,19 +92,21 @@ func _physics_process(delta):
 		
 		#velocity.x = move_toward(velocity.x, 0, speed)
 		pass
+	
 	addAirResistance()
 	addWallBounce()
-	
 	updateTimer()
 	
-	
-	#velocity.x = velocityLaunch.x
 	velocity.x = walkvelocity.x + velocityLaunch.x
-	#velocity.y = velocity.y + velocityLaunch.y
+	#DO NOT MOVE THIS
 	
 	update_animation()
 	update_facing_direction()
 	move_and_slide()
+	
+	
+	#velocity.y = velocity.y + velocityLaunch.y
+	
 func updateTimer():
 	if startTimer:
 		get_node("/root/Node2D").timeElapsed = timeElapsed
@@ -126,7 +131,6 @@ func jump():
 
 func addWallBounce():
 	if is_on_wall():
-		print("wall")
 		velocityLaunch.x *= wallBounciness * -1
 
 func mouseLeftClick():
@@ -186,6 +190,7 @@ func _on_death_detection_body_shape_entered(body_rid, body, body_shape_index, lo
 
 func _on_interactable_detection_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	if body is TileMap:
+		#print(body)
 		processTilemapCollision(body, body_rid)
 	
 func processTilemapCollision(body, body_rid):
@@ -195,29 +200,30 @@ func processTilemapCollision(body, body_rid):
 	#print(tileData)
 	var interactableType = tileData.get_custom_data_by_layer_id(0) #returns value of custom metadata
 	if interactableType == "Deadly": 
-		print("die")
 		death()
 	elif interactableType == "SpringRight":
-		print(collidedTileCoords)
-		print(position)
 		spring("Right")
 	elif interactableType == "SpringUp":
 		spring("Up")
+	elif interactableType == "SpringLeft":
+		spring("Left")
+	elif interactableType == "SpringDown":
+		spring("Down")
 
 func spring(springDirection):
-	#print(velocityLaunch)
 	if springDirection == "Right":
 		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness)
-		#velocityLaunch.y += minSpringBounciness * 10
+	elif springDirection == "Left":
+		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness) * -1
 	elif springDirection == "Up":
 		velocity.y = max(abs(velocity.y), minSpringBounciness)  * -1
-		print(velocity.y)
+	elif springDirection == "Down":
+		velocity.y = max(abs(velocity.y), minSpringBounciness)
 	pass
 
 func death():
-	get_tree().change_scene_to_file("res://scripts/test_level.tscn")
-
-
+	get_tree().change_scene_to_file(Filepath)
+	pass
 func _on_interactable_detection_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 	if area.is_in_group("GoalZone"):
 		goalTouched.emit()

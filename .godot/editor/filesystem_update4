@@ -1,5 +1,8 @@
-res://scripts/test_level.tscn
+res://Levels/test_level.tscn
 res://scripts/CharacterBody2D.gd
 res://scripts/placeholder tiles.tres
-res://characters/player.tscn
-res://scripts/levelSelect.tscn
+res://characters/Player/player.tscn
+res://Levels/levelSelect.tscn
+res://scripts/GUI.tscn
+res://scripts/GoalZone.tscn
+res://Levels/Prototype2.tscn
