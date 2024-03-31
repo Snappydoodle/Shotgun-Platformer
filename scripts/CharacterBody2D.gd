@@ -11,7 +11,7 @@ signal goalTouched
 @export var groundResistance : float = 1.2
 @export var wallBounciness : float = .065
 @export var minSpringBounciness : float = 500
-@export var clickSpeed : float = 0.2
+@export var clickSpeed : float = .2
 #@export var extraAirResistanceThreshold : float = 750
 
  #Your motherings ssss read
@@ -42,7 +42,7 @@ var canClick : bool = true
 var deltaGlobal : float = 0.00
 
 func _physics_process(delta):
-
+	print(canClick)
 	deltaGlobal = delta
 	# Add the gravity.
 	if is_on_floor():
@@ -135,22 +135,25 @@ func addWallBounce():
 
 func mouseLeftClick():
 	if canClick:
-		updateMousePosition()
-		mousePlayerAngle = mousePosition.angle_to_point(position)
 		launchPlayer()
 		$Timer.start(clickSpeed)
+		canClick = false
 	else:
 		clickBuffer = true
 
 func _on_timer_timeout():
 	if clickBuffer:
 		clickBuffer = false
+		$Timer.start(clickSpeed)
 		launchPlayer()
 	else:
 		canClick = true
 	pass # Replace with function body.
 
 func launchPlayer():
+	updateMousePosition()
+	mousePlayerAngle = mousePosition.angle_to_point(position)
+		
 	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
 	velocity.y = launchMultiplier * sin(mousePlayerAngle) * .75
 	startTimer = true

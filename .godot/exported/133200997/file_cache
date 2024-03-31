@@ -1,11 +1,11 @@
 res://characters/Player/deathHitbox.tres::33611476d07fa62fa13d18cb2fbf7fcb::1710301808::res://.godot/exported/133200997/export-fc9260509415653a2ea35a8088b44baf-deathHitbox.res
-res://characters/Player/player.tscn::d38da7e5e8acf7cca8b6a4fd85742045::1711862610::res://.godot/exported/133200997/export-fae8a8eeadeab65b03b7455dc0516378-player.scn
+res://characters/Player/player.tscn::d38da7e5e8acf7cca8b6a4fd85742045::1711863142::res://.godot/exported/133200997/export-fae8a8eeadeab65b03b7455dc0516378-player.scn
 res://characters/Player/playerHitbox.tres::1ea1efe583d93eec6d28c2a482cbd1aa::1710104212::res://.godot/exported/133200997/export-07fd3466a0c701f1eb1ec7a0e9dab35d-playerHitbox.res
-res://Levels/levelSelect.tscn::eca0165c6dc6a5f12724e8572010a732::1711862610::res://.godot/exported/133200997/export-a97771f7d3040b382844e782f007d91c-levelSelect.scn
+res://Levels/levelSelect.tscn::eca0165c6dc6a5f12724e8572010a732::1711863142::res://.godot/exported/133200997/export-a97771f7d3040b382844e782f007d91c-levelSelect.scn
 res://Levels/Prototype1.tscn::22f9d8e1ab2cb83d89c7d977b0b36dbc::1710307213::res://.godot/exported/133200997/export-67124947c6b315ce02eb82609331fbf8-Prototype1.scn
-res://Levels/Prototype2.tscn::75fdea8a3e65a761c650a73b7c6bf262::1711862610::res://.godot/exported/133200997/export-616d79da5b98637b86a96b030b4cb907-Prototype2.scn
-res://Levels/test_level.tscn::8c74911bf03bd262c9d5e7960d5ecd48::1711862609::res://.godot/exported/133200997/export-cdfc72a2c7de608a57721ef95d29853e-test_level.scn
-res://scripts/GoalZone.tscn::6c457f89a9573385c645a66d0f4b0a5a::1711862610::res://.godot/exported/133200997/export-d85bf1ea211f3f38ad2cb4d8cbed727a-GoalZone.scn
-res://scripts/GUI.tscn::4dfab9d490c2a1554e066b3e3fde3797::1711862610::res://.godot/exported/133200997/export-d9d60f9b9424c0e9f8070eadd2b314ac-GUI.scn
+res://Levels/Prototype2.tscn::75fdea8a3e65a761c650a73b7c6bf262::1711863142::res://.godot/exported/133200997/export-616d79da5b98637b86a96b030b4cb907-Prototype2.scn
+res://Levels/test_level.tscn::8c74911bf03bd262c9d5e7960d5ecd48::1711863142::res://.godot/exported/133200997/export-cdfc72a2c7de608a57721ef95d29853e-test_level.scn
+res://scripts/GoalZone.tscn::6c457f89a9573385c645a66d0f4b0a5a::1711863142::res://.godot/exported/133200997/export-d85bf1ea211f3f38ad2cb4d8cbed727a-GoalZone.scn
+res://scripts/GUI.tscn::4dfab9d490c2a1554e066b3e3fde3797::1711863142::res://.godot/exported/133200997/export-d9d60f9b9424c0e9f8070eadd2b314ac-GUI.scn
 res://scripts/old terrain.tres::2edbcad8176f6d5fe32136944a34687b::1710039350::res://.godot/exported/133200997/export-62b0ce2c888e62c048a58ba07d2ba90d-old terrain.res
 res://scripts/placeholder tiles.tres::8196f1ca2e293c0d225dbe32794f7b4f::1711861397::res://.godot/exported/133200997/export-c7949dd090cb1316f3472f3c5a0d2baa-placeholder tiles.res
