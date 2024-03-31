@@ -42,7 +42,6 @@ var canClick : bool = true
 var deltaGlobal : float = 0.00
 
 func _physics_process(delta):
-	print(canClick)
 	deltaGlobal = delta
 	# Add the gravity.
 	if is_on_floor():
