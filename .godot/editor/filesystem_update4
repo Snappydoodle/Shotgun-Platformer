@@ -1,8 +1,13 @@
 res://Levels/test_level.tscn
 res://scripts/CharacterBody2D.gd
 res://scripts/placeholder tiles.tres
+res://characters/Player/playerSprite.tres
 res://characters/Player/player.tscn
 res://Levels/levelSelect.tscn
 res://scripts/GUI.tscn
 res://scripts/GoalZone.tscn
 res://Levels/Prototype2.tscn
+res://scripts/shotgun_particles.tscn
+res://scripts/Particles.gd
+res://scripts/Bullet.tscn
+res://scripts/Bullet.gd
