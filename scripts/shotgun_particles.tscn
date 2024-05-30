@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvgdmk76ebu0u"]
+
+[ext_resource type="Texture2D" uid="uid://btlgbq8uha4ug" path="res://assets/Characters and Weapons/Shotgun Particles.png" id="1_knxsl"]
+[ext_resource type="Script" path="res://scripts/Particles.gd" id="2_22uhe"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bwxly"]
+particles_animation = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0avxd"]
+particle_flag_disable_z = true
+spread = 25.0
+initial_velocity_min = 75.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -200.0
+linear_accel_max = -175.0
+anim_speed_min = 1.0
+anim_speed_max = 2.0
+
+[node name="ShotgunParticles" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_bwxly")
+scale = Vector2(2, 2)
+process_material = SubResource("ParticleProcessMaterial_0avxd")
+texture = ExtResource("1_knxsl")
+lifetime = 2.0
+explosiveness = 1.0
+randomness = 0.5
+script = ExtResource("2_22uhe")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
