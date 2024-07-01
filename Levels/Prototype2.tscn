@@ -39,6 +39,7 @@ text = "These are springs
 position = Vector2(1938, -781)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2(0.75, 0.75)
 process_callback = 0
 drag_left_margin = 0.0
 drag_top_margin = 0.0

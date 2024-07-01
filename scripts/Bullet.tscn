@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cd4b8sp3k1lcf"]
+[gd_scene load_steps=7 format=3 uid="uid://cd4b8sp3k1lcf"]
 
 [ext_resource type="Script" path="res://scripts/Bullet.gd" id="1_yvasr"]
 
@@ -35,14 +35,33 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(0.5, 0.406126),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iw6pf"]
 _data = {
 "shoot": SubResource("Animation_t88kd")
 }
 
-[node name="Bullet" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rtbfy"]
+size = Vector2(5, 5)
+
+[node name="Bullet" type="CharacterBody2D"]
+collision_layer = 16
 script = ExtResource("1_yvasr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_v2mnj")
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -60,13 +79,6 @@ offset_bottom = 2.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Area2D" type="Area2D" parent="Node2D"]
-collision_layer = 16
-collision_mask = 8
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D"]
-shape = SubResource("RectangleShape2D_v2mnj")
-
 [node name="Line2D" type="Line2D" parent="Node2D"]
 points = PackedVector2Array(0, 0, -50, 0)
 width = 5.0
@@ -76,6 +88,13 @@ width_curve = SubResource("Curve_vedpx")
 libraries = {
 "": SubResource("AnimationLibrary_iw6pf")
 }
+
+[node name="Area2D" type="Area2D" parent="Node2D"]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D"]
+shape = SubResource("RectangleShape2D_rtbfy")
 
 [node name="BulletLifespan" type="Timer" parent="."]
 wait_time = 2.0

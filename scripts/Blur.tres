@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://2wc66njpcbxq"]
+
+[ext_resource type="Shader" path="res://scripts/Blur.gdshader" id="1_156ti"]
+
+[resource]
+shader = ExtResource("1_156ti")
+shader_parameter/lod = 3.0

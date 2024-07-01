@@ -54,6 +54,8 @@ var lastIdleRandom : int = -1
 
 var gunReloaded : bool = false
 
+@onready var tileMap = get_node("/root/Node2D/Level/TileMap")
+
 func _ready():
 	animated_sprite.play("idle")
 	animation_player.play("idle")
@@ -238,12 +240,12 @@ func launchPlayer():
 	
 	var shotgun_particles = SHOTGUN_PARTICLES.instantiate()
 	add_child(shotgun_particles)
-	shotgun_particles.global_position = Vector2(position.x - cos(mousePlayerAngle) * 37.5, position.y - sin(mousePlayerAngle) * 37.5)
+	shotgun_particles.global_position = Vector2(position.x - cos(mousePlayerAngle) * 37.5 * scale.x, position.y - sin(mousePlayerAngle) * 37.5 * scale.y)
 	shotgun_particles.rotation = $Gun.rotation
 	#print(str(get_node(shotgun_particles)))
 	
 	shootBullets(4, 15)
-	
+	#shootBullets(1, 0)
 	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
 	velocity.y = launchMultiplier * sin(mousePlayerAngle) * .75
 	
@@ -257,7 +259,7 @@ func shootBullets(amount, spread):
 		randomize()
 		var bullet = BULLET.instantiate()
 		add_sibling(bullet)
-		bullet.global_position = Vector2(position.x - cos(mousePlayerAngle) * 37.5, position.y - sin(mousePlayerAngle) * 37.5)
+		bullet.global_position = Vector2(position.x - cos(mousePlayerAngle) * 37.5 * scale.x, position.y - sin(mousePlayerAngle) * 37.5 * scale.y)
 		bullet.rotation = $Gun.rotation + deg_to_rad(randf_range(spread * -1, spread))
 func addAirResistance():
 	airResistanceB()
