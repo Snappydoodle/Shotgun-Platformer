@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=3 uid="uid://sawoag0bjoau"]
+
+[ext_resource type="Script" path="res://scripts/Bullet (OLD).gd" id="1_22gpi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v2mnj"]
+size = Vector2(5, 5)
+
+[sub_resource type="Curve" id="Curve_vedpx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_t88kd"]
+resource_name = "shoot"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Line2D:default_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iw6pf"]
+_data = {
+"shoot": SubResource("Animation_t88kd")
+}
+
+[node name="Bullet" type="Node2D"]
+script = ExtResource("1_22gpi")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Node2D"]
+custom_minimum_size = Vector2(5, 5)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.5
+offset_top = -2.5
+offset_right = 2.5
+offset_bottom = 2.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Area2D" type="Area2D" parent="Node2D"]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D"]
+shape = SubResource("RectangleShape2D_v2mnj")
+
+[node name="Line2D" type="Line2D" parent="Node2D"]
+points = PackedVector2Array(0, 0, -50, 0)
+width = 5.0
+width_curve = SubResource("Curve_vedpx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D"]
+libraries = {
+"": SubResource("AnimationLibrary_iw6pf")
+}
+
+[node name="BulletLifespan" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="SpringCooldown" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[connection signal="body_shape_entered" from="Node2D/Area2D" to="." method="_on_area_2d_body_shape_entered"]
+[connection signal="timeout" from="BulletLifespan" to="." method="_on_bullet_lifespan_timeout"]
+[connection signal="timeout" from="SpringCooldown" to="." method="_on_spring_cooldown_timeout"]
