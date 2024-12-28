@@ -5,40 +5,47 @@ var timeElapsed : float = 0.0
 var startTimer : bool = false
 
 @onready var tileMap = $Level/TileMap
+@onready var tileMapBackground = $Level/TileMap/Background
+@onready var tileMapInterractable = $Level/TileMap/Interractable
 
 var SPRING = preload("res://scripts/Spring.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print($Level/TileMap)
 	evaluateTileMap()
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#print($GUI/timeElapsed.visible)
 	$GUI/timeElapsed.text = "Time Elapsed: " + str(snapped(timeElapsed, 0.01))
-	#print($Level/TileMap.local_to_map(Vector2(30, 50)))
-	#$GUI.position.x = $Level/Camera2D.position.x - 640
-	#$GUI.position.y = $Level/Camera2D.position.y - 360
 	pass
 	
 func evaluateTileMap():
-	#var springTileSetId = tileMap.get_cell_atlas_coords(0, Vector2(0, 12))
-	#var tile_set: TileSet = tileMap.tile_set
-	#tile_set.tile_set_modulate(springTileSetId, Color(100,100,100,0))
-	#tileMap.set_layer_modulate(0, Color(0, 0, 0, 0))
-	var tileMapList = tileMap.get_used_cells(0)
-	for i in range(tileMapList.size() - 1):
-		var targetedTile = tileMapList[i]
-		var tileData = tileMap.get_cell_tile_data(0, targetedTile)
+	#evaluates all tiles in the Interractable TileMapLayer. Used to place animated tiles where needed
+	
+	#gets list of all tiles
+	var tileMapLayerList = tileMapInterractable.get_used_cells()
+	
+	#repeats for every tile
+	for i in range(tileMapLayerList.size() - 1):
+		
+		#gets the selected tile data
+		var targetedTile = tileMapLayerList[i]
+		var tileData = tileMapInterractable.get_cell_tile_data(targetedTile)
 		var interactableType = tileData.get_custom_data_by_layer_id(0)
-		print(interactableType)
+		
+		#creates a spring object facing correct direction for all tiles with "spring" in their name
 		if interactableType.substr(0, 6) == "Spring":
+			
+			#creates spring object and parents it to Level node
 			var spring = SPRING.instantiate()
 			$Level.add_child(spring)
-			spring.position.x = targetedTile.x * tileMap.tile_set.tile_size.x + (tileMap.tile_set.tile_size.x / 2)
-			spring.position.y = targetedTile.y * tileMap.tile_set.tile_size.y + (tileMap.tile_set.tile_size.y / 2)
+			
+			#sets postition of spring
+			spring.position.x = targetedTile.x * tileMapInterractable.tile_set.tile_size.x + (tileMapInterractable.tile_set.tile_size.x / 2)
+			spring.position.y = targetedTile.y * tileMapInterractable.tile_set.tile_size.y + (tileMapInterractable.tile_set.tile_size.y / 2)
+			
+			#sets rotation of spring (default rotation is up)
 			match interactableType:
 				"SpringRight":
 					spring.rotation = PI / 2
@@ -64,4 +71,3 @@ func _on_gui_level_select():
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Levels/levelSelect.tscn")
 	pass # Replace with function body.
-

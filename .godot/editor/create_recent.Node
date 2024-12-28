@@ -1,6 +1,7 @@
+RemoteTransform2D
+Node2D
 TileMap
 ParallaxLayer
-Node2D
 ColorRect
 WorldEnvironment
 ParallaxBackground
@@ -12,4 +13,3 @@ CharacterBody2D
 Timer
 Line2D
 GPUParticles2D
-AudioStreamPlayer

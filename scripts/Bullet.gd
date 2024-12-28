@@ -1,69 +1,129 @@
 extends CharacterBody2D
 
+@onready var trail = $Node2D/Line2D
+@onready var anim_player = $Node2D/AnimationPlayer
+
 @export var isTesting : bool = false
 @export var speed : float = 15.0
 @export var speed_randomness : float = 5.0
 @export var springMoveAmount : float = 5.0
+@export var MAX_TRAIL_LENGTH : int = 7
 
 var touchedSpringRecently : bool = false
 var bulletDirection : Vector2 = Vector2(1,1)
 var lastSpringDirection : String
 var ranOnce : bool = false
-# Called when the node enters the scene tree for the first time.
+
+var queue : Array
+
 func _ready():
-	#print("new bullet")
+	
+	#sets the speed of the bullet
 	randomize()
 	if isTesting:
 		speed = 5
 	else:
 		speed += randf_range(speed_randomness * -1, speed_randomness)
 	
-	$Node2D/AnimationPlayer.play("shoot")
+	#flashes the bullet white
+	anim_player.play("shoot")
 	pass # Replace with function body.
-
+	
+	
+func global_to_local_pos(global_pos: Vector2) -> Vector2:
+	return global_pos + position
+	pass
 func _physics_process(delta):
+	
+	#sets velocity of bullet based on speed
+	#DO NOT MOVE TO _ready(), IT WILL BREAK
 	if not ranOnce:
+		
 		velocity.x = speed * cos(rotation)
 		velocity.y = speed * sin(rotation)
+		
+		#configures bulletDirection, makes velcity positive as result
 		if velocity.x < 0:
+			
 			velocity.x = abs(velocity.x)
 			bulletDirection.x = -1
+			
 		if velocity.y < 0:
+			
 			velocity.y = abs(velocity.y)
 			bulletDirection.y = -1
+		
+		#makes sure this code doesn't run more than once
 		ranOnce = true
+	
+		
+	#sets direction based on bulletDirection
 	velocity.x = abs(velocity.x) * bulletDirection.x
 	velocity.y = abs(velocity.y) * bulletDirection.y
 	
+	#sets rotation of bullet
 	if velocity.x < 0:
 		rotation = PI + atan(velocity.y / velocity.x)
 	else:
 		rotation = atan(velocity.y / velocity.x)
-	#print(rotation)
-	#print(bulletDirection)
+	
+	
+	#detects if hit another hitbox
 	if move_and_collide(velocity):
 		if touchedSpringRecently:
+			
+			#teleports bullet outside of spring to prevent firing multiple times if the bullet has touched a spring recently
 			if lastSpringDirection == "Right" or lastSpringDirection == "Left":
 				position.x += bulletDirection.x * springMoveAmount * -1
 			if lastSpringDirection == "Up" or lastSpringDirection == "Down":
 				position.y += bulletDirection.y * springMoveAmount * -1
 		else:
+			#despawns bullet if touches wall
 			despawnBullet()
+	
+	createTrail()
+
+
+func createTrail():
+	#creates a trail behind the bullet
+	
+	#gets current global position of bullet
+	var pos = global_position
+	
+	#adds to a list of positions to add to the Line2D
+	queue.push_front(pos)
+	
+	#if queue size is too long cut off the oldest positions
+	if queue.size() > MAX_TRAIL_LENGTH:
+		queue.pop_back()
+	
+	#remove previous frame's points
+	trail.clear_points()
+	
+	#adds all points to Line2D
+	for point in queue:
+		trail.add_point(point)
 
 func despawnBullet():
-	queue_free()
+	anim_player.play("death")
+	
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "death":
+		queue_free()
+	pass # Replace with function body.
 
 
 func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
-	if body is TileMap:
+	if body is TileMapLayer:
 		processTilemapCollision(body, body_rid)
-	pass # Replace with function body.
 
 func processTilemapCollision(body, body_rid):
 	var collidedTileCoords = body.get_coords_for_body_rid(body_rid)
-	var tileData = body.get_cell_tile_data(0, collidedTileCoords)
+	var tileData = body.get_cell_tile_data(collidedTileCoords)
 	var interactableType = tileData.get_custom_data_by_layer_id(0) #returns value of custom metadata
-	#print("bullet: " + interactableType)
+	
+	
 	if interactableType == "SpringRight":
 		spring("Right")
 	elif interactableType == "SpringUp":
