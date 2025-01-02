@@ -8,7 +8,9 @@ var startTimer : bool = false
 @onready var tileMapBackground = $Level/TileMap/Background
 @onready var tileMapInterractable = $Level/TileMap/Interractable
 
-var SPRING = preload("res://scripts/Spring.tscn")
+const SPRING = preload("res://scripts/Spring.tscn")
+const TILESET_LIB = preload("res://scripts/TilesetLibrary.gd")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	evaluateTileMap()
@@ -32,28 +34,33 @@ func evaluateTileMap():
 		#gets the selected tile data
 		var targetedTile = tileMapLayerList[i]
 		var tileData = tileMapInterractable.get_cell_tile_data(targetedTile)
+		
 		var interactableType = tileData.get_custom_data_by_layer_id(0)
+		var hideTile = tileData.get_custom_data("hideTile")
+		var dirVec = TILESET_LIB.get_direction_vector(tileMapInterractable,targetedTile) #gets direction vector
+		var tileRot = TILESET_LIB.direction_vec_to_rotation(dirVec) #gets rotation of tile
+		
+		if hideTile:
+			tileData.modulate.a = 0
 		
 		#creates a spring object facing correct direction for all tiles with "spring" in their name
 		if interactableType.substr(0, 6) == "Spring":
+			createSpring(targetedTile, tileRot)
 			
-			#creates spring object and parents it to Level node
-			var spring = SPRING.instantiate()
-			$Level.add_child(spring)
-			
-			#sets postition of spring
-			spring.position.x = targetedTile.x * tileMapInterractable.tile_set.tile_size.x + (tileMapInterractable.tile_set.tile_size.x / 2)
-			spring.position.y = targetedTile.y * tileMapInterractable.tile_set.tile_size.y + (tileMapInterractable.tile_set.tile_size.y / 2)
-			
-			#sets rotation of spring (default rotation is up)
-			match interactableType:
-				"SpringRight":
-					spring.rotation = PI / 2
-				"SpringDown":
-					spring.rotation = PI
-				"SpringLeft":
-					spring.rotation = - PI / 2
 		pass
+		
+func createSpring(targetedTile: Vector2i, tileRot: float):
+	#creates spring object and parents it to Level node
+	var spring = SPRING.instantiate()
+	$Level.add_child(spring)
+			
+	#sets postition of spring
+	spring.position.x = targetedTile.x * tileMapInterractable.tile_set.tile_size.x + (tileMapInterractable.tile_set.tile_size.x / 2)
+	spring.position.y = targetedTile.y * tileMapInterractable.tile_set.tile_size.y + (tileMapInterractable.tile_set.tile_size.y / 2)
+			
+	#sets rotation of spring 
+	spring.rotation = tileRot
+	
 
 func _on_player_goal_touched():
 	showGoalScreen()

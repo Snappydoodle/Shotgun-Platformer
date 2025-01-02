@@ -11,8 +11,10 @@ extends CharacterBody2D
 
 var touchedSpringRecently : bool = false
 var bulletDirection : Vector2 = Vector2(1,1)
-var lastSpringDirection : String
+var lastSpringDirection : Vector2i
 var ranOnce : bool = false
+
+const TILESET_LIB = preload("res://scripts/TilesetLibrary.gd")
 
 var queue : Array
 
@@ -73,9 +75,9 @@ func _physics_process(delta):
 		if touchedSpringRecently:
 			
 			#teleports bullet outside of spring to prevent firing multiple times if the bullet has touched a spring recently
-			if lastSpringDirection == "Right" or lastSpringDirection == "Left":
+			if lastSpringDirection.x != 0:
 				position.x += bulletDirection.x * springMoveAmount * -1
-			if lastSpringDirection == "Up" or lastSpringDirection == "Down":
+			if lastSpringDirection.y != 0:
 				position.y += bulletDirection.y * springMoveAmount * -1
 		else:
 			#despawns bullet if touches wall
@@ -122,36 +124,43 @@ func processTilemapCollision(body, body_rid):
 	var collidedTileCoords = body.get_coords_for_body_rid(body_rid)
 	var tileData = body.get_cell_tile_data(collidedTileCoords)
 	var interactableType = tileData.get_custom_data_by_layer_id(0) #returns value of custom metadata
+	var dirVec = TILESET_LIB.get_direction_vector(body, collidedTileCoords)
 	
-	
-	if interactableType == "SpringRight":
-		spring("Right")
-	elif interactableType == "SpringUp":
-		spring("Up")
-	elif interactableType == "SpringLeft":
-		spring("Left")
-	elif interactableType == "SpringDown":
-		spring("Down")
-	else:
+	if interactableType == "Spring":
+		spring(dirVec)
+	#if interactableType == "SpringRight":
+		#spring("Right")
+	#elif interactableType == "SpringUp":
+		#spring("Up")
+	#elif interactableType == "SpringLeft":
+		#spring("Left")
+	#elif interactableType == "SpringDown":
+		#spring("Down")
+	else:#if all else fails the bullet must have touched something that should kill it
 		if touchedSpringRecently == false:
 			despawnBullet()
 			
-func spring(springDirection):
+func spring(springDir: Vector2i):
 	
-	lastSpringDirection = springDirection
+	lastSpringDirection = springDir
 	var lastDirection = bulletDirection
-	if springDirection == "Right":
-		bulletDirection.x = 1
-	elif springDirection == "Left":
-		bulletDirection.x = -1
-	elif springDirection == "Up":
-		bulletDirection.y = -1
-	elif springDirection == "Down":
-		bulletDirection.y = 1
-	if lastDirection != bulletDirection:#makes sure the bullet actually changed direction
+	
+	if springDir.x != 0:
+		bulletDirection.x = springDir.x
+	if springDir.y != 0:
+		bulletDirection.y = springDir.y * -1 #because for some reason down is positive
+		
+	#if springDirection == "Right":
+		#bulletDirection.x = 1
+	#elif springDirection == "Left":
+		#bulletDirection.x = -1
+	#elif springDirection == "Up":
+		#bulletDirection.y = -1
+	#elif springDirection == "Down":
+		#bulletDirection.y = 1
+	if lastDirection != bulletDirection:#makes sure the bullet actually changed direction before setting off cooldown
 		$SpringCooldown.start()
 		touchedSpringRecently = true
-	#print(bulletDirection)
 	pass
 
 func _on_spring_cooldown_timeout():

@@ -26,6 +26,7 @@ signal goalTouched
 
 var SHOTGUN_PARTICLES = preload("res://scripts/shotgun_particles.tscn")
 var BULLET = preload("res://scripts/Bullet.tscn")
+const TILESET_LIB = preload("res://scripts/TilesetLibrary.gd")
 
 var double_jumps : int = 0
 var velocityLaunch = Vector2(0,0)
@@ -108,19 +109,19 @@ func _physics_process(delta):
 	#direction = Input.get_vector("left", "right", "up", "down")
 	direction = Vector2(sign(direction.x), sign(direction.y))
 	
-	if direction.x: #checks if input has been pressed
-		startTimer = true
-		beforedir = direction.x
-		if direction.x == 1:
-			walkvelocity.x = min(walkvelocity.x + acc, speed)
-		else:
-			walkvelocity.x = max(walkvelocity.x - acc, -speed)
-	else:
-		if beforedir == 1:
-			walkvelocity.x = max(walkvelocity.x - acc*5, 0)
-		else:
-			walkvelocity.x = min(walkvelocity.x + acc*5, 0)
-		pass
+	#if direction.x: #checks if input has been pressed
+		#startTimer = true
+		#beforedir = direction.x
+		#if direction.x == 1:
+			#walkvelocity.x = min(walkvelocity.x + acc, speed)
+		#else:
+			#walkvelocity.x = max(walkvelocity.x - acc, -speed)
+	#else:
+		#if beforedir == 1:
+			#walkvelocity.x = max(walkvelocity.x - acc*5, 0)
+		#else:
+			#walkvelocity.x = min(walkvelocity.x + acc*5, 0)
+		#pass
 	
 	addAirResistance()
 	addWallBounce()
@@ -427,30 +428,37 @@ func processTilemapCollision(body, body_rid):
 	
 	#gets data of tile
 	var tileData = body.get_cell_tile_data(collidedTileCoords)
-	var interactableType = tileData.get_custom_data_by_layer_id(0) #returns value of custom metadata
 	
+	#setting variables
+	var interactableType = tileData.get_custom_data_by_layer_id(0) #returns value of custom metadata
+	var isDeadly = tileData.get_custom_data("isDeadly")
+	var dirVec = TILESET_LIB.get_direction_vector(body, collidedTileCoords)
 	#decides what code to run based on interactableType
-	if interactableType == "Deadly": 
+	if isDeadly:
 		death()
-	elif interactableType == "SpringRight":
-		spring("Right")
-	elif interactableType == "SpringUp":
-		spring("Up")
-	elif interactableType == "SpringLeft":
-		spring("Left")
-	elif interactableType == "SpringDown":
-		spring("Down")
+	if interactableType == "test":
+		print(TILESET_LIB.get_direction_vector(body, collidedTileCoords))
+		print(TILESET_LIB.direction_vec_to_rotation(TILESET_LIB.get_direction_vector(body, collidedTileCoords), true))
+	if interactableType == "Spring":
+		spring(dirVec)
+	#elif interactableType == "SpringRight":
+		#spring("Right")
+	#elif interactableType == "SpringUp":
+		#spring("Up")
+	#elif interactableType == "SpringLeft":
+		#spring("Left")
+	#elif interactableType == "SpringDown":
+		#spring("Down")
 
-func spring(springDirection):
+
+func spring(springDir: Vector2i):
 	#reflects player based on direction of spring and chracter
-	if springDirection == "Right":
-		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness)
-	elif springDirection == "Left":
-		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness) * -1
-	elif springDirection == "Up":
-		velocity.y = max(abs(velocity.y), minSpringBounciness)  * -1
-	elif springDirection == "Down":
-		velocity.y = max(abs(velocity.y), minSpringBounciness)
+	
+	if springDir.x != 0:
+		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness) * springDir.x 
+	if springDir.y != 0:
+		velocity.y = max(abs(velocity.y), minSpringBounciness) * springDir.y * -1 #because for some reason down is positive
+	
 	pass
 
 func death():

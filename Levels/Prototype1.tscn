@@ -1,10 +1,11 @@
 [gd_scene load_steps=6 format=3 uid="uid://daf4ow5rxwe7i"]
 
 [ext_resource type="Script" path="res://scripts/Level.gd" id="1_103ah"]
-[ext_resource type="TileSet" uid="uid://thoqwwkwtsso" path="res://scripts/placeholder tiles.tres" id="2_df83j"]
+[ext_resource type="TileSet" uid="uid://thoqwwkwtsso" path="res://assets/Tilesets/Middleground.tres" id="2_df83j"]
 [ext_resource type="PackedScene" uid="uid://c02osq4shmuds" path="res://characters/Player/player.tscn" id="3_fj4cf"]
 [ext_resource type="PackedScene" uid="uid://g41wrq8v0ckq" path="res://scripts/GoalZone.tscn" id="4_ns1ry"]
 [ext_resource type="PackedScene" uid="uid://bhksyx548g50s" path="res://scripts/GUI.tscn" id="5_nlkos"]
+
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_103ah")

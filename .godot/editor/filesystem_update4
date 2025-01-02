@@ -2,11 +2,15 @@ res://Levels/test_level.tscn
 res://scripts/placeholder tiles.tres
 res://scripts/CharacterBody2D.gd
 res://characters/Player/playerSprite.tres
+res://Levels/Prototype2.tscn
+res://scripts/Spring.tscn
+res://assets/Tilesets/Middleground.tres
+res://assets/Tilesets/Background.tres
 res://characters/Player/player.tscn
 res://Levels/levelSelect.tscn
 res://scripts/GUI.tscn
-res://Levels/Prototype2.tscn
 res://scripts/shotgun_particles.tscn
 res://scripts/Bullet.tscn
-res://scripts/Spring.tscn
+res://scripts/Level.gd
+res://scripts/TilesetLibrary.gd
 res://scripts/Bullet.gd
