@@ -14,6 +14,7 @@ signal goalTouched
 @export var clickSpeed : float = .2
 @export var spriteScale : int = 2
 @export var spriteStretch : float = 1
+@export var snapAmount : float = .01
 @export var isTesting : bool = false
 #@export var extraAirResistance`Threshold : float = 750
 
@@ -26,10 +27,12 @@ signal goalTouched
 
 var SHOTGUN_PARTICLES = preload("res://scripts/shotgun_particles.tscn")
 var BULLET = preload("res://scripts/Bullet.tscn")
-const TILESET_LIB = preload("res://scripts/TilesetLibrary.gd")
+const TILESET_LIB = preload("res://scripts/Libraries/TilesetLib.gd")
+const GENERAL_LIB = preload("res://scripts/Libraries/GeneralLib.gd")
 
 var double_jumps : int = 0
 var velocityLaunch = Vector2(0,0)
+var extraVelocity = Vector2(0,0)
 var beforedir : int = 0
 @export var acc = 20
 var walkvelocity :  Vector2 = Vector2.ZERO
@@ -64,15 +67,23 @@ func _ready():
 	
 func _physics_process(delta):
 	deltaGlobal = delta
+	
+	if !(velocityLaunch.y == 0 and extraVelocity.y == 0):
+		velocity.y = velocityLaunch.y + extraVelocity.y
+	
 	# Add the gravity.
 	if is_on_floor():
 		animation_locked = false
 		is_double_jumping = false
+	
 	else:
 		animation_locked = true
 		
 		#gravity
-		velocity.y += gravity * delta
+		velocity.y += gravity * delta #old
+		#velocityLaunch.y += (gravity * delta) * GENERAL_LIB.percentageOf(velocityLaunch.y, extraVelocity.y)
+		#velocity.y = velocityLaunch.y + extraVelocity.y
+		
 		
 		#kinda useless code lol
 		if is_double_jumping == false:
@@ -85,7 +96,12 @@ func _physics_process(delta):
 		else:
 			#animated_sprite.play("double jump")
 			pass
-
+	
+	#if is_on_ceiling():
+		#velocityLaunch.y = 0
+		#extraVelocity.y = 0
+	#print(velocityLaunch.y)
+	
 	# Handle Jump (more useless code)
 	if Input.is_action_just_pressed("jump"):
 		startTimer = true
@@ -101,8 +117,8 @@ func _physics_process(delta):
 	updateMousePosition()
 	
 	#if player left clicks run left click code
-	if Input.is_action_just_pressed("mouseLeftClick"):
-		mouseLeftClick()
+	#if Input.is_action_just_pressed("mouseLeftClick"):
+		#mouseLeftClick()
 	
 	
 	#more useless code lmao
@@ -127,15 +143,25 @@ func _physics_process(delta):
 	addWallBounce()
 	updateTimer()
 	
-	velocity.x = walkvelocity.x + velocityLaunch.x
+	velocity.x = walkvelocity.x + velocityLaunch.x + extraVelocity.x
 	#DO NOT MOVE THIS
 	
 	update_animation()
 	update_facing_direction()
 	idleAnimation()
 	updateSpriteStretching()
+	
 	move_and_slide()
-	roundVelocityLaunch()
+	
+	var oldVelocityLaunch = velocityLaunch
+	velocityLaunch.y = velocity.y * GENERAL_LIB.percentageOf(velocityLaunch.y, extraVelocity.y)
+	extraVelocity.y = velocity.y * GENERAL_LIB.percentageOf(extraVelocity.y, oldVelocityLaunch.y)
+	
+	if Input.is_action_just_pressed("mouseLeftClick"):
+		mouseLeftClick()
+	
+	roundVars()
+	
 	reloadGun()
 	
 	
@@ -155,11 +181,13 @@ func reloadGun():
 		
 		
 		
-func roundVelocityLaunch():
-	#rounds velocityLaunch to prevent having rlly small numbers (like 0.000000001), allows character to actually stop
+func roundVars():
+	#rounds vars to prevent having rlly small numbers (like 0.000000001), allows character to actually stop
 	
-	if velocityLaunch.x >= -0.01 and velocityLaunch.x <= 0.01:
-		velocityLaunch.x = 0
+	velocityLaunch = GENERAL_LIB.roundVector(velocityLaunch, snapAmount)
+	extraVelocity = GENERAL_LIB.roundVector(extraVelocity, snapAmount)
+	#if velocityLaunch.x >= -0.01 and velocityLaunch.x <= 0.01:
+		#velocityLaunch.x = 0
 	
 	
 func updateTimer():
@@ -178,7 +206,7 @@ func updateSpriteStretching():
 	animated_sprite.position.y = -10 * spriteStretch + 10
 	#print(animation_player.current_animation)
 	if animation_player.current_animation == "air":
-		var velocityRatio = abs(velocity.y + 1) / abs(velocityLaunch.x + 1)
+		var velocityRatio = abs(velocity.y + 1) / abs(velocity.x + 1)
 		if velocityRatio >= PI / 2:
 			velocityRatio = PI / 2
 		spriteStretch = .05 * cos(2 * (velocityRatio - (PI / 2))) + 1
@@ -199,7 +227,7 @@ func idleAnimation():
 	#handles idle animations. look at _on_idle_timer_timeout() for more info
 	
 	#runs of character is stationary
-	if velocity.y == 0 and velocityLaunch.x == 0:
+	if velocity.y == 0 and velocity.x == 0:
 		
 		#plays idle animation
 		animation_player.play("idle")
@@ -210,14 +238,14 @@ func idleAnimation():
 			idle_timer.start(randf_range(4, 6))
 			
 	#stops timer if not stationary
-	if !(velocity.y == 0 and velocityLaunch.x == 0):
+	if !(velocity.y == 0 and velocity.x == 0):
 		idle_timer.stop()
 
 func _on_idle_timer_timeout():
 	#randomly plays a special idle animation every time IdleTimer reaches 0
 	
 	#makes sure character is still stationary
-	if velocity.y == 0 and velocityLaunch.x == 0:
+	if velocity.y == 0 and velocity.x == 0:
 		
 		#chooses random number
 		randomize()
@@ -268,6 +296,7 @@ func addWallBounce():
 	
 	if is_on_wall():
 		velocityLaunch.x *= wallBounciness * -1
+		extraVelocity.x *= wallBounciness * -1
 
 func mouseLeftClick():
 	#limits the amount of times the mouse can be left clicked at once, prevents spamming the shoot button
@@ -340,8 +369,8 @@ func launchPlayer():
 	
 	#sets velocities of character to launch them based on mouse's position
 	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
-	velocity.y = launchMultiplier * sin(mousePlayerAngle) * .75
-	
+	velocityLaunch.y = launchMultiplier * sin(mousePlayerAngle) * .75
+		
 	#starts timer if not started yet
 	#look at updateTimer() for more info
 	startTimer = true
@@ -387,10 +416,11 @@ func airResistanceB():
 	#for ground resistance
 	if is_on_floor():
 		velocityLaunch.x /= groundResistance
-	
+		extraVelocity.x /= groundResistance
 	else:
 		#for air resistance
 		velocityLaunch.x /= airResistance
+		extraVelocity.x /= airResistance
 		
 func updateMousePosition():
 	#updates the mouse position
@@ -457,7 +487,7 @@ func spring(springDir: Vector2i):
 	if springDir.x != 0:
 		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness) * springDir.x 
 	if springDir.y != 0:
-		velocity.y = max(abs(velocity.y), minSpringBounciness) * springDir.y * -1 #because for some reason down is positive
+		velocityLaunch.y = max(abs(velocity.y), minSpringBounciness) * springDir.y
 	
 	pass
 

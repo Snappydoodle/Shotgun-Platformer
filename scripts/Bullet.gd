@@ -14,7 +14,7 @@ var bulletDirection : Vector2 = Vector2(1,1)
 var lastSpringDirection : Vector2i
 var ranOnce : bool = false
 
-const TILESET_LIB = preload("res://scripts/TilesetLibrary.gd")
+const TILESET_LIB = preload("res://scripts/Libraries/TilesetLib.gd")
 
 var queue : Array
 
@@ -148,7 +148,7 @@ func spring(springDir: Vector2i):
 	if springDir.x != 0:
 		bulletDirection.x = springDir.x
 	if springDir.y != 0:
-		bulletDirection.y = springDir.y * -1 #because for some reason down is positive
+		bulletDirection.y = springDir.y
 		
 	#if springDirection == "Right":
 		#bulletDirection.x = 1

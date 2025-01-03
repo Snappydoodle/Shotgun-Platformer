@@ -4,15 +4,20 @@ var bulletsFired : int = 0
 var timeElapsed : float = 0.0
 var startTimer : bool = false
 
+var specialTilesDict : Dictionary
+
 @onready var tileMap = $Level/TileMap
 @onready var tileMapBackground = $Level/TileMap/Background
 @onready var tileMapInterractable = $Level/TileMap/Interractable
 
-const SPRING = preload("res://scripts/Spring.tscn")
-const TILESET_LIB = preload("res://scripts/TilesetLibrary.gd")
+const SPRING = preload("res://scripts/SpecialObjects/Spring/Spring.tscn")
+const TILESET_LIB = preload("res://scripts/Libraries/TilesetLib.gd")
+
+@export var specialTilesPath = "res://scripts/SpecialObjects/"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	preloadSpecialTiles()
 	evaluateTileMap()
 	pass # Replace with function body.
 
@@ -21,7 +26,21 @@ func _ready():
 func _process(delta):
 	$GUI/timeElapsed.text = "Time Elapsed: " + str(snapped(timeElapsed, 0.01))
 	pass
-	
+
+func preloadSpecialTiles():
+	var dir = DirAccess.open(specialTilesPath)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				print("Found directory: " + file_name)
+				var scenePath = str(specialTilesPath, file_name, "/", file_name, ".tscn")
+				specialTilesDict[file_name] = load(scenePath)
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+	print(specialTilesDict)
 func evaluateTileMap():
 	#evaluates all tiles in the Interractable TileMapLayer. Used to place animated tiles where needed
 	
@@ -44,8 +63,11 @@ func evaluateTileMap():
 			tileData.modulate.a = 0
 		
 		#creates a spring object facing correct direction for all tiles with "spring" in their name
-		if interactableType.substr(0, 6) == "Spring":
+		
+		if interactableType != "":
 			createSpring(targetedTile, tileRot)
+		#if interactableType.substr(0, 6) == "Spring":
+			#createSpring(targetedTile, tileRot)
 			
 		pass
 		
