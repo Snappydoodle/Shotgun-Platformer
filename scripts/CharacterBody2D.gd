@@ -16,6 +16,8 @@ signal goalTouched
 @export var spriteStretch : float = 1
 @export var snapAmount : float = .01
 @export var isTesting : bool = false
+@export var specialTilesPath : String = "res://scripts/SpecialObjects/"
+
 #@export var extraAirResistance`Threshold : float = 750
 
  #Your motherings ssss read
@@ -58,6 +60,8 @@ var deltaGlobal : float = 0.00
 var lastIdleRandom : int = -1
 
 var gunReloaded : bool = false
+
+var specialTilesDict : Dictionary
 
 @onready var tileMap = get_node("/root/Node2D/Level/TileMap")
 
@@ -470,15 +474,26 @@ func processTilemapCollision(body, body_rid):
 		print(TILESET_LIB.get_direction_vector(body, collidedTileCoords))
 		print(TILESET_LIB.direction_vec_to_rotation(TILESET_LIB.get_direction_vector(body, collidedTileCoords), true))
 	if interactableType == "Spring":
+		var test = load("res://scripts/SpecialObjects/Spring/SpringPlayer.gd")
+		print(test)
+		test.testing()
 		spring(dirVec)
-	#elif interactableType == "SpringRight":
-		#spring("Right")
-	#elif interactableType == "SpringUp":
-		#spring("Up")
-	#elif interactableType == "SpringLeft":
-		#spring("Left")
-	#elif interactableType == "SpringDown":
-		#spring("Down")
+
+func preloadSpecialTiles():
+	var dir = DirAccess.open(specialTilesPath)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				print("Found directory: " + file_name)
+				var scenePath = str(specialTilesPath, file_name, "/", file_name, ".tscn")
+				specialTilesDict[file_name] = load(scenePath)
+				
+				
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
 
 
 func spring(springDir: Vector2i):

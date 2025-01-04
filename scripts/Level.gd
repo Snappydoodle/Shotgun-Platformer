@@ -37,6 +37,8 @@ func preloadSpecialTiles():
 				print("Found directory: " + file_name)
 				var scenePath = str(specialTilesPath, file_name, "/", file_name, ".tscn")
 				specialTilesDict[file_name] = load(scenePath)
+				
+				
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
