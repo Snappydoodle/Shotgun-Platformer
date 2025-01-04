@@ -3,6 +3,9 @@ signal levelSelect
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	preload("res://assets/GUI/Spining Small GEar-sheet.png")
+	
 	pass # Replace with function body.
 
 

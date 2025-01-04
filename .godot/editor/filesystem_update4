@@ -1,0 +1,13 @@
+res://Levels/test_level.tscn
+res://assets/Tilesets/Middleground.tres
+res://scripts/CharacterBody2D.gd
+res://characters/Player/playerSprite.tres
+res://assets/Tilesets/Background.tres
+res://characters/Player/player.tscn
+res://Levels/levelSelect.tscn
+res://scripts/GUI.tscn
+res://Levels/Prototype2.tscn
+res://scripts/shotgun_particles.tscn
+res://scripts/Bullet.tscn
+res://scripts/SpecialObjects/Spring/Spring.tscn
+res://scripts/GUI.gd
