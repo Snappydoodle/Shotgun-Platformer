@@ -1,3 +1,4 @@
+TextureRect
 TileMapLayer
 RemoteTransform2D
 Node2D
@@ -12,4 +13,3 @@ CollisionShape2D
 Area2D
 CharacterBody2D
 Timer
-Line2D

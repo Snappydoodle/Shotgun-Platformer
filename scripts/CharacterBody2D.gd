@@ -227,7 +227,7 @@ func idleAnimation():
 	#handles idle animations. look at _on_idle_timer_timeout() for more info
 	
 	#runs of character is stationary
-	if velocity.y == 0 and velocity.x == 0:
+	if velocity == Vector2(0, 0):
 		
 		#plays idle animation
 		animation_player.play("idle")
@@ -497,6 +497,7 @@ func death():
 	#literally just reloads the scene lmao
 	get_tree().change_scene_to_file(Filepath)
 	
+
 func _on_interactable_detection_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
 	if area.is_in_group("GoalZone"):
 		goalTouched.emit()
