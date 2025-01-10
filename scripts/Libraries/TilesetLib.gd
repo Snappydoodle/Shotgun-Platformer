@@ -33,5 +33,11 @@ static func direction_vec_to_rotation(direction_vec: Vector2, inDegrees = false)
 	else:
 		return output
 			
-			
+static func getCollidedTileCoords(tileMap: TileMapLayer, body_rid: RID) -> Vector2i:
+	return tileMap.get_coords_for_body_rid(body_rid)
+
+static func getTileData(tileMap: TileMapLayer, collidedTileCoords: Vector2i) -> TileData:
+	#gets data of tile
+	var tileData = tileMap.get_cell_tile_data(collidedTileCoords)
+	return tileData
 		

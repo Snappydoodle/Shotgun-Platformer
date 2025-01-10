@@ -1,6 +1,7 @@
-res://scripts/SpecialObjects/Spring
 res://assets/Tilesets
+res://scripts/SpecialObjects/Conveyor
 res://scripts
+res://scripts/SpecialObjects/Spring
 res://assets/Characters and Weapons
 res://characters/Player
 res://characters/Player (OLD)

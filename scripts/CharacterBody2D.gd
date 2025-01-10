@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Player
 
 signal goalTouched
 
@@ -6,47 +7,55 @@ signal goalTouched
 @export var jump_velocity : float = -400.0
 @export var double_jump_velocity : float = -300.0
 @export var max_double_jumps: int = 1
-@export var launchMultiplier : float = 1000
+@export var launchMultiplier : float = 1050
 @export var airResistance : float = 1.015
 @export var groundResistance : float = 1.2
 @export var wallBounciness : float = .065
-@export var minSpringBounciness : float = 500
 @export var clickSpeed : float = .2
 @export var spriteScale : int = 2
 @export var spriteStretch : float = 1
 @export var snapAmount : float = .01
 @export var isTesting : bool = false
 @export var specialTilesPath : String = "res://scripts/SpecialObjects/"
+@export var bulletOffset : float = 0
+@export var gameSpeed : float = 1
 
 #@export var extraAirResistance`Threshold : float = 750
 
  #Your motherings ssss read
-
-@onready var bulletsFired = get_node("/root/Node2D").bulletsFired
-@onready var timeElapsed = get_node("/root/Node2D").timeElapsed
-@onready var startTimer = get_node("/root/Node2D").startTimer
-@onready var Filepath = get_node("/root/Node2D").scene_file_path
+@onready var rootNode = get_node("/root/Node2D")
+@onready var bulletsFired = rootNode.bulletsFired
+@onready var timeElapsed = rootNode.timeElapsed
+@onready var startTimer = rootNode.startTimer
+@onready var Filepath = rootNode.scene_file_path
+@onready var camera = rootNode.get_node("Camera2D")
 
 var SHOTGUN_PARTICLES = preload("res://scripts/shotgun_particles.tscn")
 var BULLET = preload("res://scripts/Bullet.tscn")
+
 const TILESET_LIB = preload("res://scripts/Libraries/TilesetLib.gd")
 const GENERAL_LIB = preload("res://scripts/Libraries/GeneralLib.gd")
 
 var double_jumps : int = 0
 var velocityLaunch = Vector2(0,0)
+var lastFrameVelocityLaunch = Vector2(0,0)
 var extraVelocity = Vector2(0,0)
+var lastFrameExtraVelocity = Vector2(0,0)
 var beforedir : int = 0
 @export var acc = 20
 var walkvelocity :  Vector2 = Vector2.ZERO
 var acceleration : Vector2 = Vector2.ZERO
 var mousePosition = Vector2(0,0)
 var mousePlayerAngle : float = 0 #the angle between the mouse and the player
+var disableGroundResistance : bool = false
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
+@onready var player_state : AnimationPlayer = $PlayerState
 @onready var animation_player : AnimationPlayer = $AnimationPlayer
 @onready var shoot_cooldown_timer : Timer = $ShootCooldownTimer
 @onready var idle_timer : Timer = $IdleTimer
-@onready var gun_sprite : AnimatedSprite2D = $Gun/GunSprite
+@onready var gun_sprite : AnimatedSprite2D = $Gun/Offset/GunSprite
+@onready var gun_animation_player : AnimationPlayer = $Gun/GunAnimationPlayer
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var animation_locked : bool = false
@@ -65,12 +74,24 @@ var specialTilesDict : Dictionary
 
 @onready var tileMap = get_node("/root/Node2D/Level/TileMap")
 
+
+func getPos() -> Vector2:
+	return scale
+	
 func _ready():
 	animated_sprite.play("idle")
-	animation_player.play("idle")
+	player_state.play("idle")
+	loadScenes()
+	gameSpeed = 1
+	
+func loadScenes():
+	pass
 	
 func _physics_process(delta):
 	deltaGlobal = delta
+	
+	lastFrameVelocityLaunch = velocityLaunch
+	lastFrameExtraVelocity = extraVelocity
 	
 	if !(velocityLaunch.y == 0 and extraVelocity.y == 0):
 		velocity.y = velocityLaunch.y + extraVelocity.y
@@ -101,10 +122,6 @@ func _physics_process(delta):
 			#animated_sprite.play("double jump")
 			pass
 	
-	#if is_on_ceiling():
-		#velocityLaunch.y = 0
-		#extraVelocity.y = 0
-	#print(velocityLaunch.y)
 	
 	# Handle Jump (more useless code)
 	if Input.is_action_just_pressed("jump"):
@@ -154,6 +171,7 @@ func _physics_process(delta):
 	update_facing_direction()
 	idleAnimation()
 	updateSpriteStretching()
+	setGameSpeed(gameSpeed)
 	
 	move_and_slide()
 	
@@ -168,13 +186,15 @@ func _physics_process(delta):
 	
 	reloadGun()
 	
-	
+func setGameSpeed(gameSpeed: float):
+	Engine.time_scale = gameSpeed
+
 	
 func reloadGun():
 	#reloads gun
 	
 	#if player is on floor and has not already reloaded their gun, reload the gun
-	if is_on_floor() and !(gunReloaded):
+	if is_on_floor() and !(gunReloaded) and ($JustShotTimer.time_left == 0):
 		
 		#plays animation
 		gun_sprite.play("shotgun_reload")
@@ -190,8 +210,6 @@ func roundVars():
 	
 	velocityLaunch = GENERAL_LIB.roundVector(velocityLaunch, snapAmount)
 	extraVelocity = GENERAL_LIB.roundVector(extraVelocity, snapAmount)
-	#if velocityLaunch.x >= -0.01 and velocityLaunch.x <= 0.01:
-		#velocityLaunch.x = 0
 	
 	
 func updateTimer():
@@ -208,8 +226,8 @@ func updateSpriteStretching():
 	animated_sprite.scale.x = (1 / spriteStretch) * spriteScale
 	animated_sprite.scale.y = spriteStretch * spriteScale
 	animated_sprite.position.y = -10 * spriteStretch + 10
-	#print(animation_player.current_animation)
-	if animation_player.current_animation == "air":
+	
+	if player_state.current_animation == "air":
 		var velocityRatio = abs(velocity.y + 1) / abs(velocity.x + 1)
 		if velocityRatio >= PI / 2:
 			velocityRatio = PI / 2
@@ -234,7 +252,7 @@ func idleAnimation():
 	if velocity == Vector2(0, 0):
 		
 		#plays idle animation
-		animation_player.play("idle")
+		player_state.play("idle")
 		
 		#when idle timer reaches zero restarts it at a random value
 		if idle_timer.time_left == 0:
@@ -348,8 +366,21 @@ func launchPlayer():
 	
 	#updates animations
 	animated_sprite.play("shoot")
+	
+	gun_sprite.stop()
 	gun_sprite.play("shotgun_shoot")
-	animation_player.play("air")
+	
+	gun_animation_player.stop()
+	gun_animation_player.play("shoot")
+	$JustShotTimer.start()
+	
+	player_state.stop()
+	player_state.play("air")
+	
+	animation_player.stop()
+	gameSpeed = 1
+	animation_player.play("shoot")
+	
 	$Gun/ShotgunShoot.play()
 	$Gun/ShotgunReload.stop()
 	
@@ -363,18 +394,27 @@ func launchPlayer():
 	shotgun_particles.global_position = Vector2(position.x - cos(mousePlayerAngle) * 37.5 * scale.x, position.y - sin(mousePlayerAngle) * 37.5 * scale.y)
 	shotgun_particles.rotation = $Gun.rotation
 	
+	#shake camera
+	camera.applyShake(5, 10)
+	
 	#creates bullets
 	if isTesting:
 		shootBullets(1,0)
 	else:
 		shootBullets(4, 15)
+		shootBullets(1, 0)
 	
 	
 	
 	#sets velocities of character to launch them based on mouse's position
 	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
 	velocityLaunch.y = launchMultiplier * sin(mousePlayerAngle) * .75
-		
+	
+	if sign(velocityLaunch.x * extraVelocity.x) == -1:
+		extraVelocity.x = 0
+	if sign(velocityLaunch.y * extraVelocity.y) == -1:
+		extraVelocity.y = 0
+	
 	#starts timer if not started yet
 	#look at updateTimer() for more info
 	startTimer = true
@@ -398,7 +438,7 @@ func shootBullets(amount, spread):
 		add_sibling(bullet)
 		
 		#changes position and rotation of bullet
-		bullet.global_position = Vector2(position.x - cos(mousePlayerAngle) * 37.5 * scale.x, position.y - sin(mousePlayerAngle) * 37.5 * scale.y)
+		bullet.global_position = Vector2(position.x - cos(mousePlayerAngle) * bulletOffset * scale.x, position.y - sin(mousePlayerAngle) * bulletOffset * scale.y)
 		bullet.rotation = $Gun.rotation + deg_to_rad(randf_range(spread * -1, spread))
 		
 		
@@ -419,8 +459,10 @@ func airResistanceB():
 	
 	#for ground resistance
 	if is_on_floor():
-		velocityLaunch.x /= groundResistance
-		extraVelocity.x /= groundResistance
+		if !disableGroundResistance:
+			print(extraVelocity)
+			velocityLaunch.x /= groundResistance
+			extraVelocity.x /= groundResistance
 	else:
 		#for air resistance
 		velocityLaunch.x /= airResistance
@@ -453,8 +495,14 @@ func _on_interactable_detection_body_shape_entered(body_rid, body, body_shape_in
 	#if the body is a TileMapLayer process the collision
 	if body is TileMapLayer:
 		processTilemapCollision(body, body_rid)
+
+func _on_interactable_detection_body_shape_exited(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
 	
-func processTilemapCollision(body, body_rid):
+	#if the body is a TileMapLayer process the collision
+	if body is TileMapLayer:
+		processTilemapCollision(body, body_rid, true)
+
+func processTilemapCollision(body, body_rid, isExiting = false):
 	#processes collissions between character and tilemap
 	
 	#finds collided tile
@@ -466,18 +514,28 @@ func processTilemapCollision(body, body_rid):
 	#setting variables
 	var interactableType = tileData.get_custom_data_by_layer_id(0) #returns value of custom metadata
 	var isDeadly = tileData.get_custom_data("isDeadly")
+	var extraData = tileData.get_custom_data("ExtraData")
 	var dirVec = TILESET_LIB.get_direction_vector(body, collidedTileCoords)
+	
+	
+	var varsDict : Dictionary
+	varsDict["dirVec"] = dirVec
+	varsDict["extraData"] = extraData
+	varsDict["body_rid"] = body_rid
+	varsDict["body"] = body
+	
 	#decides what code to run based on interactableType
 	if isDeadly:
 		death()
 	if interactableType == "test":
 		print(TILESET_LIB.get_direction_vector(body, collidedTileCoords))
 		print(TILESET_LIB.direction_vec_to_rotation(TILESET_LIB.get_direction_vector(body, collidedTileCoords), true))
-	if interactableType == "Spring":
-		var test = load("res://scripts/SpecialObjects/Spring/SpringPlayer.gd")
-		print(test)
-		test.testing()
-		spring(dirVec)
+	
+	if interactableType != "" and $Subscripts/SpecialTiles.get_node_or_null(interactableType) != null:
+		if isExiting:
+			$Subscripts/SpecialTiles.get_node(interactableType).playerExited(varsDict)
+		else:
+			$Subscripts/SpecialTiles.get_node(interactableType).playerCollided(varsDict)
 
 func preloadSpecialTiles():
 	var dir = DirAccess.open(specialTilesPath)
@@ -494,17 +552,6 @@ func preloadSpecialTiles():
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
-
-
-func spring(springDir: Vector2i):
-	#reflects player based on direction of spring and chracter
-	
-	if springDir.x != 0:
-		velocityLaunch.x = max(abs(velocityLaunch.x), minSpringBounciness) * springDir.x 
-	if springDir.y != 0:
-		velocityLaunch.y = max(abs(velocity.y), minSpringBounciness) * springDir.y
-	
-	pass
 
 func death():
 	#code that runs when player dies

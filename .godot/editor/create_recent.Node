@@ -1,15 +1,14 @@
+AnimationPlayer
+Node2D
 TextureRect
 TileMapLayer
 RemoteTransform2D
-Node2D
 TileMap
 ParallaxLayer
 ColorRect
 WorldEnvironment
 ParallaxBackground
 AnimatedSprite2D
-AnimationPlayer
 CollisionShape2D
 Area2D
 CharacterBody2D
-Timer

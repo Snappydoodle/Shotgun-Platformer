@@ -47,5 +47,4 @@ drag_bottom_margin = 0.0
 
 [node name="GUI" parent="." instance=ExtResource("5_okmj1")]
 
-[connection signal="goalTouched" from="Level/Player" to="." method="_on_player_goal_touched"]
 [connection signal="levelSelect" from="GUI" to="." method="_on_gui_level_select"]

@@ -1,12 +1,42 @@
-[gd_scene load_steps=21 format=3 uid="uid://c02osq4shmuds"]
+[gd_scene load_steps=30 format=3 uid="uid://c02osq4shmuds"]
 
-[ext_resource type="Script" path="res://scripts/SpecialObjects/Spring/SpringPlayer.gd" id="1_xb6a8"]
+[ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_4n72o"]
+[ext_resource type="Script" path="res://scripts/SpecialObjects/Spring/SpringPlayer.gd" id="2_fxnmy"]
 [ext_resource type="SpriteFrames" uid="uid://cwgm5uyuq1v14" path="res://characters/Player/playerSprite.tres" id="2_mcjp0"]
 [ext_resource type="Texture2D" uid="uid://cfqvph6cgvh11" path="res://assets/Characters and Weapons/Shotgun.png" id="3_nq28v"]
+[ext_resource type="Script" path="res://scripts/SpecialObjects/Conveyor/ConveyorPlayer.gd" id="3_yachb"]
 [ext_resource type="AudioStream" uid="uid://bfaeytss4l32a" path="res://assets/Sound Effects/Shotgun Shoot.wav" id="4_steuf"]
 [ext_resource type="AudioStream" uid="uid://cdvxn1xnb2vb" path="res://assets/Sound Effects/Shotgun Reload.wav" id="5_8skxb"]
 [ext_resource type="Shape2D" uid="uid://q0nvthlif00t" path="res://characters/Player/playerHitbox.tres" id="7_nubvs"]
 [ext_resource type="Shape2D" uid="uid://md4gjc7hbhgn" path="res://characters/Player/deathHitbox.tres" id="7_tvtty"]
+
+[sub_resource type="Animation" id="Animation_qtoe1"]
+length = 0.1
+
+[sub_resource type="Animation" id="Animation_8h62g"]
+resource_name = "shoot"
+length = 0.0175
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:gameSpeed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0175),
+"transitions": PackedFloat32Array(100, 100),
+"update": 0,
+"values": [0.025, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_psxkt"]
+_data = {
+"RESET": SubResource("Animation_qtoe1"),
+"shoot": SubResource("Animation_8h62g")
+}
+
+[sub_resource type="Animation" id="Animation_7gvu1"]
+length = 0.001
 
 [sub_resource type="Animation" id="Animation_ddu48"]
 resource_name = "air"
@@ -31,6 +61,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e6kjo"]
 _data = {
+"RESET": SubResource("Animation_7gvu1"),
 "air": SubResource("Animation_ddu48"),
 "idle": SubResource("Animation_tfvm8")
 }
@@ -112,15 +143,70 @@ random_pitch = 1.1
 streams_count = 1
 stream_0/stream = ExtResource("5_8skxb")
 
+[sub_resource type="Animation" id="Animation_erpmu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Offset:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mj0rk"]
+resource_name = "shoot"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Offset:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(-10, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5spcg"]
+_data = {
+"RESET": SubResource("Animation_erpmu"),
+"shoot": SubResource("Animation_mj0rk")
+}
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 4
 position = Vector2(300, 0)
 scale = Vector2(0.5, 0.5)
 collision_layer = 2
 collision_mask = 7
-script = ExtResource("1_xb6a8")
+script = ExtResource("1_4n72o")
+spriteStretch = 0.9116
+gameSpeed = 0.025
+
+[node name="Subscripts" type="Node2D" parent="."]
+
+[node name="SpecialTiles" type="Node2D" parent="Subscripts"]
+
+[node name="Spring" type="Node2D" parent="Subscripts/SpecialTiles"]
+script = ExtResource("2_fxnmy")
+useOldFormula = true
+
+[node name="Conveyor" type="Node2D" parent="Subscripts/SpecialTiles"]
+script = ExtResource("3_yachb")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_psxkt")
+}
+
+[node name="PlayerState" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_e6kjo")
 }
@@ -134,11 +220,13 @@ offset = Vector2(-7, -5)
 
 [node name="Gun" type="Node2D" parent="."]
 
-[node name="GunSprite" type="AnimatedSprite2D" parent="Gun"]
+[node name="Offset" type="Node2D" parent="Gun"]
+
+[node name="GunSprite" type="AnimatedSprite2D" parent="Gun/Offset"]
 position = Vector2(25, 0)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_7dwog")
-animation = &"shotgun_shoot"
+animation = &"shotgun_idle"
 autoplay = "shotgun_idle"
 
 [node name="ShotgunShoot" type="AudioStreamPlayer" parent="Gun"]
@@ -149,6 +237,11 @@ pitch_scale = 1.1
 [node name="ShotgunReload" type="AudioStreamPlayer" parent="Gun"]
 stream = SubResource("AudioStreamRandomizer_6yvid")
 volume_db = -10.0
+
+[node name="GunAnimationPlayer" type="AnimationPlayer" parent="Gun"]
+libraries = {
+"": SubResource("AnimationLibrary_5spcg")
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
@@ -182,10 +275,16 @@ one_shot = true
 [node name="IdleTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="JustShotTimer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="animation_finished" from="Gun/GunSprite" to="." method="_on_gun_sprite_animation_finished"]
+[connection signal="animation_finished" from="Gun/Offset/GunSprite" to="." method="_on_gun_sprite_animation_finished"]
 [connection signal="body_shape_entered" from="DeathDetection" to="." method="_on_death_detection_body_shape_entered"]
 [connection signal="area_shape_entered" from="InteractableDetection" to="." method="_on_interactable_detection_area_shape_entered"]
 [connection signal="body_shape_entered" from="InteractableDetection" to="." method="_on_interactable_detection_body_shape_entered"]
+[connection signal="body_shape_exited" from="InteractableDetection" to="." method="_on_interactable_detection_body_shape_exited"]
 [connection signal="timeout" from="ShootCooldownTimer" to="." method="_on_ShootCooldownTimer_timeout"]
 [connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="JustShotTimer" to="." method="_on_idle_timer_timeout"]
