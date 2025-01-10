@@ -1,10 +1,11 @@
 extends Resource
 
 static func percentageOf(a: float, b: float) -> float:
+	#print("a: ", a, "b: ", b, "total: ", a / (a + b))
 	if a == 0 and b == 0:
 		return 0
 	else:
-		return a / (a + b)
+		return abs(a) / (abs(a) + abs(b))
 		
 static func roundDecimal(num: float, dec_places: float = .01) -> float:
 	var output = roundf(num * (1 / dec_places)) * dec_places

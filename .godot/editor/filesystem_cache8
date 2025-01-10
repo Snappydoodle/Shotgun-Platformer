@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1736473451
+::res://::1736490831
 icon.svg::CompressedTexture2D::1754144557413544238::1725415832::1736039357::1::::<><>::
 README.md::TextFile::-1::1725415832::0::1::::<><>::
 ::res://assets/::1735977421
@@ -640,45 +640,45 @@ vector_complete.svg::CompressedTexture2D::5838366781127857268::1725415832::17360
 Shotgun Original.mp3::AudioStreamMP3::8824005042623465760::1725415832::1736039356::1::::<><>::
 Shotgun Reload.wav::AudioStreamWAV::147887674677077487::1725415832::1736039358::1::::<><>::
 Shotgun Shoot.wav::AudioStreamWAV::2737651655515235566::1725415832::1736039358::1::::<><>::
-::res://assets/Tilesets/::1736388194
+::res://assets/Tilesets/::1736473472
 Animated 16x16 Tiles.png::CompressedTexture2D::1401149857978338509::1736230189::1736230237::1::::<><>::
 Background.png::CompressedTexture2D::174185710639814537::1735764065::1736039357::1::::<><>::
-Background.tres::TileSet::790936014677845982::1736388194::0::1::::<><>::uid://cqm2wchvs3vp::::res://assets/Tilesets/Background.png
+Background.tres::TileSet::790936014677845982::1736473472::0::1::::<><>::uid://cqm2wchvs3vp::::res://assets/Tilesets/Background.png
 Middleground.png::CompressedTexture2D::9106928883193289411::1735763747::1736039357::1::::<><>::
-Middleground.tres::TileSet::1348918473986164722::1736388194::0::1::::<><>::uid://d20p12eeimpix::::res://assets/Tilesets/Middleground.png<>uid://bhs57p760snsa::::res://assets/Pixel Adventure 1/Free/Terrain/Terrain (16x16).png<>uid://cefh5ceoa33g2::::res://assets/Pixel Adventure 1/Free/Traps/Spikes/Idle.png<>uid://bp1aomoqgd4wt::::res://assets/Tilesets/Special.png
+Middleground.tres::TileSet::1348918473986164722::1736473472::0::1::::<><>::uid://d20p12eeimpix::::res://assets/Tilesets/Middleground.png<>uid://bhs57p760snsa::::res://assets/Pixel Adventure 1/Free/Terrain/Terrain (16x16).png<>uid://cefh5ceoa33g2::::res://assets/Pixel Adventure 1/Free/Traps/Spikes/Idle.png<>uid://bp1aomoqgd4wt::::res://assets/Tilesets/Special.png
 Shadow Textures.png::CompressedTexture2D::7320816886239296692::1735702471::1736039357::1::::<><>::
 Special.png::CompressedTexture2D::3492952813626410091::1736320860::1736320862::1::::<><>::
 ::res://characters/::1725415832
-::res://characters/Player/::1736400748
+::res://characters/Player/::1736486067
 deathHitbox.tres::CapsuleShape2D::850231241735320429::1725415832::0::1::::<><>::
-player.tscn::PackedScene::6584183725886261528::1736400748::0::1::::<><>::res://scripts/CharacterBody2D.gd<>res://scripts/SpecialObjects/Spring/SpringPlayer.gd<>uid://cwgm5uyuq1v14::::res://characters/Player/playerSprite.tres<>uid://cfqvph6cgvh11::::res://assets/Characters and Weapons/Shotgun.png<>res://scripts/SpecialObjects/Conveyor/ConveyorPlayer.gd<>uid://bfaeytss4l32a::::res://assets/Sound Effects/Shotgun Shoot.wav<>uid://cdvxn1xnb2vb::::res://assets/Sound Effects/Shotgun Reload.wav<>uid://q0nvthlif00t::::res://characters/Player/playerHitbox.tres<>uid://md4gjc7hbhgn::::res://characters/Player/deathHitbox.tres
+player.tscn::PackedScene::6584183725886261528::1736486067::0::1::::<><>::res://scripts/CharacterBody2D.gd<>res://scripts/SpecialObjects/Spring/SpringPlayer.gd<>uid://cwgm5uyuq1v14::::res://characters/Player/playerSprite.tres<>uid://cfqvph6cgvh11::::res://assets/Characters and Weapons/Shotgun.png<>res://scripts/SpecialObjects/Conveyor/ConveyorPlayer.gd<>uid://bfaeytss4l32a::::res://assets/Sound Effects/Shotgun Shoot.wav<>uid://cdvxn1xnb2vb::::res://assets/Sound Effects/Shotgun Reload.wav<>uid://q0nvthlif00t::::res://characters/Player/playerHitbox.tres<>uid://md4gjc7hbhgn::::res://characters/Player/deathHitbox.tres
 playerHitbox.tres::CapsuleShape2D::1175458773905969681::1725415832::0::1::::<><>::
-playerSprite.tres::SpriteFrames::6330165460151063477::1736388194::0::1::::<><>::uid://dmfnkid3lksry::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Double Jump (32x32).png<>uid://dqrjnljegbve8::::res://assets/Characters and Weapons/TestSubject69.png<>uid://dojx5yv13f6kl::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Fall (32x32).png<>uid://civio7ullmytv::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Jump (32x32).png<>uid://jnxnptgqbprs::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Run (32x32).png
+playerSprite.tres::SpriteFrames::6330165460151063477::1736473472::0::1::::<><>::uid://dmfnkid3lksry::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Double Jump (32x32).png<>uid://dqrjnljegbve8::::res://assets/Characters and Weapons/TestSubject69.png<>uid://dojx5yv13f6kl::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Fall (32x32).png<>uid://civio7ullmytv::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Jump (32x32).png<>uid://jnxnptgqbprs::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Run (32x32).png
 ::res://characters/Player (OLD)/::1725415832
 deathHitbox (OLD).tres::CapsuleShape2D::2245638621880441964::1725415832::0::1::::<><>::
 player (OLD).tscn::PackedScene::1786154984184852509::1725415832::0::1::::<><>::res://scripts/CharacterBody2D.gd<>uid://urdo3kj63keg::::res://characters/Player (OLD)/playerSprite (OLD).tres<>uid://q0nvthlif00t::::res://characters/Player/playerHitbox.tres<>uid://md4gjc7hbhgn::::res://characters/Player/deathHitbox.tres
 playerHitbox (OLD).tres::CapsuleShape2D::2327417509662100712::1725415832::0::1::::<><>::
 playerSprite (OLD).tres::SpriteFrames::1439079933225937446::1725415832::0::1::::<><>::uid://dmfnkid3lksry::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Double Jump (32x32).png<>uid://dojx5yv13f6kl::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Fall (32x32).png<>uid://bilodlcm38i31::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Idle (32x32).png<>uid://civio7ullmytv::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Jump (32x32).png<>uid://jnxnptgqbprs::::res://assets/Pixel Adventure 1/Free/Main Characters/Virtual Guy/Run (32x32).png
-::res://Levels/::1736400748
-levelSelect.tscn::PackedScene::2657206963361492439::1736400748::0::1::::<><>::res://scripts/levelSelect.gd
+::res://Levels/::1736486067
+levelSelect.tscn::PackedScene::2657206963361492439::1736486067::0::1::::<><>::res://scripts/levelSelect.gd
 Prototype1.tscn::PackedScene::7171370936416342040::1735764005::0::1::::<><>::res://scripts/Level.gd<>uid://thoqwwkwtsso::::res://assets/Tilesets/Middleground.tres<>uid://c02osq4shmuds::::res://characters/Player/player.tscn<>uid://g41wrq8v0ckq::::res://scripts/GoalZone.tscn<>uid://bhksyx548g50s::::res://scripts/GUI.tscn
-Prototype2.tscn::PackedScene::383402262006485731::1736400748::0::1::::<><>::res://scripts/Level.gd<>uid://thoqwwkwtsso::::res://assets/Tilesets/Middleground.tres<>uid://c02osq4shmuds::::res://characters/Player/player.tscn<>uid://g41wrq8v0ckq::::res://scripts/GoalZone.tscn<>uid://bhksyx548g50s::::res://scripts/GUI.tscn
-test_level.tscn::PackedScene::6111897845370647123::1736400748::0::1::::<><>::res://scripts/Level.gd<>uid://bmsy58su05q56::::res://assets/Backgrounds/Background 1.png<>uid://thoqwwkwtsso::::res://assets/Tilesets/Middleground.tres<>uid://c02osq4shmuds::::res://characters/Player/player.tscn<>uid://bhksyx548g50s::::res://scripts/GUI.tscn<>uid://dh4iacgwgh2r3::::res://assets/Backgrounds/Parallax Background.png<>uid://g41wrq8v0ckq::::res://scripts/GoalZone.tscn<>uid://ljeuokfqhhde::::res://assets/Tilesets/Background.tres<>uid://dcki1w6h4f4e7::::res://assets/Tilesets/Shadow Textures.png<>res://scripts/Camera.gd
-::res://scripts/::1736400748
+Prototype2.tscn::PackedScene::383402262006485731::1736486067::0::1::::<><>::res://scripts/Level.gd<>uid://thoqwwkwtsso::::res://assets/Tilesets/Middleground.tres<>uid://c02osq4shmuds::::res://characters/Player/player.tscn<>uid://g41wrq8v0ckq::::res://scripts/GoalZone.tscn<>uid://bhksyx548g50s::::res://scripts/GUI.tscn
+test_level.tscn::PackedScene::6111897845370647123::1736486067::0::1::::<><>::res://scripts/Level.gd<>uid://bmsy58su05q56::::res://assets/Backgrounds/Background 1.png<>uid://thoqwwkwtsso::::res://assets/Tilesets/Middleground.tres<>uid://c02osq4shmuds::::res://characters/Player/player.tscn<>uid://bhksyx548g50s::::res://scripts/GUI.tscn<>uid://dh4iacgwgh2r3::::res://assets/Backgrounds/Parallax Background.png<>uid://g41wrq8v0ckq::::res://scripts/GoalZone.tscn<>uid://ljeuokfqhhde::::res://assets/Tilesets/Background.tres<>uid://dcki1w6h4f4e7::::res://assets/Tilesets/Shadow Textures.png<>res://scripts/Camera.gd
+::res://scripts/::1736486067
 Blur.gdshader::Shader::-1::1735105125::0::1::::<><>::
 Blur.tres::ShaderMaterial::1940693531148130434::1735105125::0::1::::<><>::res://scripts/Blur.gdshader
 Bullet.gd::GDScript::-1::1735932687::0::1::::<>CharacterBody2D<>::
-Bullet.tscn::PackedScene::5043395471238619557::1736400748::0::1::::<><>::res://scripts/Bullet.gd
+Bullet.tscn::PackedScene::5043395471238619557::1736486067::0::1::::<><>::res://scripts/Bullet.gd
 Camera.gd::GDScript::-1::1736304126::0::1::::<>Camera2D<>::
-CharacterBody2D.gd::GDScript::-1::1736400313::0::1::::Player<>CharacterBody2D<>::
+CharacterBody2D.gd::GDScript::-1::1736485337::0::1::::Player<>CharacterBody2D<>::
 GoalZone.tscn::PackedScene::482618865116004004::1725415832::0::1::::<><>::
 GUI.gd::GDScript::-1::1735977421::0::1::::<>CanvasLayer<>::
-GUI.tscn::PackedScene::2899523387366622908::1736400748::0::1::::<><>::res://scripts/GUI.gd
+GUI.tscn::PackedScene::2899523387366622908::1736486067::0::1::::<><>::res://scripts/GUI.gd
 Level.gd::GDScript::-1::1736392075::0::1::::<>Node2D<>::
 levelSelect.gd::GDScript::-1::1725415832::0::1::::<>Control<>::
 old terrain.tres::TileSet::2298506928122592129::1725415832::0::1::::<><>::uid://dh81jx70yn5to::::res://assets/placeholder tile map/Tilesheet/tilesheet_complete.png
 Particles.gd::GDScript::-1::1725415832::0::1::::<>GPUParticles2D<>::
-shotgun_particles.tscn::PackedScene::8645818190588649566::1736400748::0::1::::<><>::uid://btlgbq8uha4ug::::res://assets/Characters and Weapons/Shotgun Particles.png<>res://scripts/Particles.gd
+shotgun_particles.tscn::PackedScene::8645818190588649566::1736486067::0::1::::<><>::uid://btlgbq8uha4ug::::res://assets/Characters and Weapons/Shotgun Particles.png<>res://scripts/Particles.gd
 ::res://scripts/Libraries/::1736398913
 GeneralLib.gd::GDScript::-1::1735880722::0::1::::<>Resource<>::
 TilesetLib.gd::GDScript::-1::1736398913::0::1::::<>Resource<>::
@@ -688,13 +688,13 @@ Bullet (OLD).tscn::PackedScene::1264759970846532036::1725415832::0::1::::<><>::r
 Bullet.gd::GDScript::-1::1735171911::0::1::::<>CharacterBody2D<>::
 Bullet.tscn::PackedScene::5043395471238619557::1735248291::0::1::::<><>::res://scripts/Bullet.gd
 ::res://scripts/SpecialObjects/::1736320347
-::res://scripts/SpecialObjects/Conveyor/::1736400772
-Conveyor.gd::GDScript::-1::1736395550::0::1::::<>Node2D<>::
-Conveyor.gdshader::Shader::-1::1736400772::0::1::::<><>::
-Conveyor.tscn::PackedScene::9008574924656849800::1736400748::0::1::::<><>::res://scripts/SpecialObjects/Conveyor/Conveyor.gd<>res://scripts/SpecialObjects/Conveyor/Conveyor.gdshader<>uid://t7yy64sdral6::::res://assets/Tilesets/Animated 16x16 Tiles.png
-ConveyorPlayer.gd::GDScript::-1::1736400143::0::1::::<>Node2D<>::
-::res://scripts/SpecialObjects/Spring/::1736400748
+::res://scripts/SpecialObjects/Conveyor/::1736488388
+Conveyor.gd::GDScript::-1::1736481978::0::1::::<>Node2D<>::
+Conveyor.gdshader::Shader::-1::1736488388::0::1::::<><>::
+Conveyor.tscn::PackedScene::9008574924656849800::1736486068::0::1::::<><>::res://scripts/SpecialObjects/Conveyor/Conveyor.gd<>res://scripts/SpecialObjects/Conveyor/Conveyor.gdshader<>uid://t7yy64sdral6::::res://assets/Tilesets/Animated 16x16 Tiles.png
+ConveyorPlayer.gd::GDScript::-1::1736483472::0::1::::<>Node2D<>::
+::res://scripts/SpecialObjects/Spring/::1736486067
 Spring.gd::GDScript::-1::1736323092::0::1::::<>Node2D<>::
-Spring.tscn::PackedScene::1419928408883803998::1736400748::0::1::::<><>::res://scripts/SpecialObjects/Spring/Spring.gd<>uid://t7yy64sdral6::::res://assets/Tilesets/Animated 16x16 Tiles.png
+Spring.tscn::PackedScene::1419928408883803998::1736486067::0::1::::<><>::res://scripts/SpecialObjects/Spring/Spring.gd<>uid://t7yy64sdral6::::res://assets/Tilesets/Animated 16x16 Tiles.png
 SpringPlayer.gd::GDScript::-1::1736397877::0::1::::<>Node2D<>::
 ::res://shotgun platformer (Windows)/::1725415833

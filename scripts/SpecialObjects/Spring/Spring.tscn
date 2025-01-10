@@ -85,11 +85,11 @@ animations = [{
 [node name="Spring" type="Node2D"]
 script = ExtResource("1_63d7d")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="SpringHitbox" type="Area2D" parent="."]
 collision_layer = 8
 collision_mask = 18
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpringHitbox"]
 shape = SubResource("RectangleShape2D_5tbjv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -97,4 +97,4 @@ sprite_frames = SubResource("SpriteFrames_ie74n")
 animation = &"idle"
 autoplay = "idle"
 
-[connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
+[connection signal="body_shape_entered" from="SpringHitbox" to="." method="_on_area_2d_body_shape_entered"]

@@ -72,6 +72,9 @@ var gunReloaded : bool = false
 
 var specialTilesDict : Dictionary
 
+var testingData : Dictionary = {"velocityLaunch" : [],
+								"extraVelocity" : []}
+
 @onready var tileMap = get_node("/root/Node2D/Level/TileMap")
 
 
@@ -93,7 +96,7 @@ func _physics_process(delta):
 	lastFrameVelocityLaunch = velocityLaunch
 	lastFrameExtraVelocity = extraVelocity
 	
-	if !(velocityLaunch.y == 0 and extraVelocity.y == 0):
+	if !(isPlayerStatic()):
 		velocity.y = velocityLaunch.y + extraVelocity.y
 	
 	# Add the gravity.
@@ -176,7 +179,10 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	var oldVelocityLaunch = velocityLaunch
-	velocityLaunch.y = velocity.y * GENERAL_LIB.percentageOf(velocityLaunch.y, extraVelocity.y)
+	if isPlayerStatic():
+		velocityLaunch.y = velocity.y
+	else:
+		velocityLaunch.y = velocity.y * GENERAL_LIB.percentageOf(velocityLaunch.y, extraVelocity.y)
 	extraVelocity.y = velocity.y * GENERAL_LIB.percentageOf(extraVelocity.y, oldVelocityLaunch.y)
 	
 	if Input.is_action_just_pressed("mouseLeftClick"):
@@ -185,6 +191,22 @@ func _physics_process(delta):
 	roundVars()
 	
 	reloadGun()
+	
+	#createTestingData()
+
+func isPlayerStatic() -> bool:
+	return (velocityLaunch.y == 0 and extraVelocity.y == 0)
+
+func createTestingData():
+	if Input.is_action_just_pressed("up"):
+		print(testingData["velocityLaunch"])
+		print("")
+		print(testingData["extraVelocity"])
+		
+	testingData["velocityLaunch"].append(velocityLaunch.y)
+	testingData["extraVelocity"].append(extraVelocity.y)
+	
+	pass
 	
 func setGameSpeed(gameSpeed: float):
 	Engine.time_scale = gameSpeed
@@ -460,7 +482,6 @@ func airResistanceB():
 	#for ground resistance
 	if is_on_floor():
 		if !disableGroundResistance:
-			print(extraVelocity)
 			velocityLaunch.x /= groundResistance
 			extraVelocity.x /= groundResistance
 	else:

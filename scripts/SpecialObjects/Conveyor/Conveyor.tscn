@@ -262,11 +262,11 @@ animations = [{
 [node name="Conveyor" type="Node2D"]
 script = ExtResource("1_2tfhx")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="ConveyorHitbox" type="Area2D" parent="."]
 collision_layer = 8
 collision_mask = 18
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConveyorHitbox"]
 shape = SubResource("RectangleShape2D_5tbjv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -274,4 +274,4 @@ material = SubResource("ShaderMaterial_65363")
 sprite_frames = SubResource("SpriteFrames_ie74n")
 animation = &"idle1"
 
-[connection signal="body_shape_entered" from="Area2D" to="." method="_on_area_2d_body_shape_entered"]
+[connection signal="body_shape_entered" from="ConveyorHitbox" to="." method="_on_area_2d_body_shape_entered"]

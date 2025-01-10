@@ -22,6 +22,14 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	isInConveyor = false
+	player.disableGroundResistance = false
+	for i in player.get_node("InteractableDetection").get_overlapping_areas():
+		
+		if i.name == "ConveyorHitbox":
+			isInConveyor = true
+			player.disableGroundResistance = true
+	
 	if isInConveyor:
 		player.extraVelocity.x += magnitude * dirVec.x
 		player.extraVelocity.y += magnitude * dirVec.y
@@ -48,18 +56,18 @@ func playerCollided(varsDict: Dictionary):
 	isInConveyor = true
 	player.disableGroundResistance = true
 	
-	#if dirVec.x != 0:
-		#player.extraVelocity.x += magnitude * dirVec.x
-	#if dirVec.y != 0:
-		#player.extraVelocity.x += magnitude * dirVec.x	
-	pass
+
 	
 func playerExited(varsDict: Dictionary):
-	var tileMapLayer : TileMapLayer = varsDict["body"]
-	var tileData = TILESET_LIB.getTileData(tileMapLayer, tileMapLayer.local_to_map(player.position))
+	#print(player.get_node("InteractableDetection").get_overlapping_areas())
 	
-	if tileData == null or tileData.get_custom_data_by_layer_id(0) != "Conveyor":
-		isInConveyor = false
-		player.disableGroundResistance = false
+			
+	#
+	#var tileMapLayer : TileMapLayer = varsDict["body"]
+	#var tileData = TILESET_LIB.getTileData(tileMapLayer, tileMapLayer.local_to_map(player.position))
+	#
+	#if tileData == null or tileData.get_custom_data_by_layer_id(0) != "Conveyor":
+		#isInConveyor = false
+		#player.disableGroundResistance = false
 		
 	pass
