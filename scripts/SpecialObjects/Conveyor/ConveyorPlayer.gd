@@ -23,12 +23,12 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	isInConveyor = false
-	player.disableGroundResistance = false
+	player.enableGroundResistance = true
 	for i in player.get_node("InteractableDetection").get_overlapping_areas():
 		
 		if i.name == "ConveyorHitbox":
 			isInConveyor = true
-			player.disableGroundResistance = true
+			player.enableGroundResistance = false
 	
 	if isInConveyor:
 		player.extraVelocity.x += magnitude * dirVec.x
@@ -54,7 +54,7 @@ func playerCollided(varsDict: Dictionary):
 			magnitude = greenSpeed
 	
 	isInConveyor = true
-	player.disableGroundResistance = true
+	player.enableGroundResistance = false
 	
 
 	

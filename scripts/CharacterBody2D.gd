@@ -47,7 +47,11 @@ var walkvelocity :  Vector2 = Vector2.ZERO
 var acceleration : Vector2 = Vector2.ZERO
 var mousePosition = Vector2(0,0)
 var mousePlayerAngle : float = 0 #the angle between the mouse and the player
-var disableGroundResistance : bool = false
+
+var enableGroundResistance : bool = true
+var enableAirResistance : bool = true
+var enableShooting : bool = true
+var enableRotation : bool = true
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 @onready var player_state : AnimationPlayer = $PlayerState
@@ -317,6 +321,8 @@ func _on_idle_timer_timeout():
 func update_facing_direction():
 	#flips character and gun to always face the side of the screen the mouse is on
 	
+	if !enableRotation:
+		return
 	#flips character
 	if abs(rad_to_deg(mousePlayerAngle)) > 90:
 		animated_sprite.flip_h = false
@@ -385,6 +391,9 @@ func _on_ShootCooldownTimer_timeout():
 
 func launchPlayer():
 	#handles launching the character when the player shoots
+	
+	if !enableShooting:
+		return
 	
 	#updates animations
 	animated_sprite.play("shoot")
@@ -481,13 +490,14 @@ func airResistanceB():
 	
 	#for ground resistance
 	if is_on_floor():
-		if !disableGroundResistance:
+		if enableGroundResistance:
 			velocityLaunch.x /= groundResistance
 			extraVelocity.x /= groundResistance
 	else:
 		#for air resistance
-		velocityLaunch.x /= airResistance
-		extraVelocity.x /= airResistance
+		if enableAirResistance:
+			velocityLaunch.x /= airResistance
+			extraVelocity.x /= airResistance
 		
 func updateMousePosition():
 	#updates the mouse position
@@ -499,7 +509,8 @@ func updateMousePosition():
 	mousePlayerAngle = mousePosition.angle_to_point(position)
 	
 	#rotates the gun
-	$Gun.rotation = mousePlayerAngle + PI
+	if enableRotation:
+		$Gun.rotation = mousePlayerAngle + PI
 
 func _on_death_detection_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
 	#detects if hitbox interracts with DeathDetection. Used for deadly objects such as spikes

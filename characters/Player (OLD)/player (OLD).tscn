@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://0phygv4qbs8l"]
 
-[ext_resource type="Script" path="res://scripts/CharacterBody2D.gd" id="1_qabce"]
+[ext_resource type="Script" uid="uid://cuh33xrrkypgo" path="res://scripts/CharacterBody2D.gd" id="1_qabce"]
 [ext_resource type="SpriteFrames" uid="uid://urdo3kj63keg" path="res://characters/Player (OLD)/playerSprite (OLD).tres" id="2_40cb5"]
 [ext_resource type="Shape2D" uid="uid://q0nvthlif00t" path="res://characters/Player/playerHitbox.tres" id="7_r8hl7"]
 [ext_resource type="Shape2D" uid="uid://md4gjc7hbhgn" path="res://characters/Player/deathHitbox.tres" id="8_tseaj"]

@@ -1,16 +1,21 @@
-[gd_scene load_steps=39 format=3 uid="uid://d1l26biiyyol1"]
+[gd_scene load_steps=40 format=3 uid="uid://d1l26biiyyol1"]
 
-[ext_resource type="Script" path="res://scripts/SpecialObjects/Conveyor/Conveyor.gd" id="1_2tfhx"]
-[ext_resource type="Shader" path="res://scripts/SpecialObjects/Conveyor/Conveyor.gdshader" id="2_3x4ra"]
+[ext_resource type="Script" uid="uid://cn11mwewddxaj" path="res://scripts/SpecialObjects/Conveyor/Conveyor.gd" id="1_2tfhx"]
+[ext_resource type="Shader" uid="uid://diw2852o1awki" path="res://addons/eye_dropper/eye_dropper.gdshader" id="2_76plk"]
 [ext_resource type="Texture2D" uid="uid://t7yy64sdral6" path="res://assets/Tilesets/Animated 16x16 Tiles.png" id="2_truep"]
+[ext_resource type="Texture2D" uid="uid://cwus0asqadcay" path="res://scripts/SpecialObjects/Conveyor/Green.png" id="3_e5eu1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5tbjv"]
 size = Vector2(16, 16)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_65363"]
 resource_local_to_scene = true
-shader = ExtResource("2_3x4ra")
-shader_parameter/color = 8
+shader = ExtResource("2_76plk")
+shader_parameter/palette_array_size = 0
+shader_parameter/input_palette_texture = ExtResource("3_e5eu1")
+shader_parameter/output_palette_texture = ExtResource("3_e5eu1")
+shader_parameter/input_palette_array = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/output_palette_array = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o8ejf"]
 atlas = ExtResource("2_truep")

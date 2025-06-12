@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=4 uid="uid://ctcwcgvhtpon0"]
 
-[ext_resource type="Script" path="res://scripts/Level.gd" id="1_tqvhl"]
+[ext_resource type="Script" uid="uid://7vw771lftq44" path="res://scripts/Level.gd" id="1_tqvhl"]
 [ext_resource type="Texture2D" uid="uid://bmsy58su05q56" path="res://assets/Backgrounds/Background 1.png" id="2_jo4tb"]
 [ext_resource type="TileSet" uid="uid://thoqwwkwtsso" path="res://assets/Tilesets/Middleground.tres" id="2_kitya"]
 [ext_resource type="PackedScene" uid="uid://c02osq4shmuds" path="res://characters/Player/player.tscn" id="3_rbe4i"]
@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://g41wrq8v0ckq" path="res://scripts/GoalZone.tscn" id="4_ryjwh"]
 [ext_resource type="TileSet" uid="uid://ljeuokfqhhde" path="res://assets/Tilesets/Background.tres" id="4_vb1cq"]
 [ext_resource type="Texture2D" uid="uid://dcki1w6h4f4e7" path="res://assets/Tilesets/Shadow Textures.png" id="5_rwo44"]
-[ext_resource type="Script" path="res://scripts/Camera.gd" id="9_qacih"]
+[ext_resource type="Script" uid="uid://dpbl4ewn8cbi2" path="res://scripts/Camera.gd" id="9_qacih"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xjtjj"]
 texture = ExtResource("4_p6u2x")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://uh3apsiuir55"]
 
-[ext_resource type="Script" path="res://scripts/SpecialObjects/Spring/Spring.gd" id="1_63d7d"]
+[ext_resource type="Script" uid="uid://ba3l42ot0nvxx" path="res://scripts/SpecialObjects/Spring/Spring.gd" id="1_63d7d"]
 [ext_resource type="Texture2D" uid="uid://t7yy64sdral6" path="res://assets/Tilesets/Animated 16x16 Tiles.png" id="2_hev01"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5tbjv"]

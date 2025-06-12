@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cd4b8sp3k1lcf"]
 
-[ext_resource type="Script" path="res://scripts/Bullet.gd" id="1_yvasr"]
+[ext_resource type="Script" uid="uid://ch4xhifhd4tdx" path="res://scripts/Bullet.gd" id="1_yvasr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v2mnj"]
 size = Vector2(5, 5)
@@ -165,9 +165,9 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iw6pf"]
 _data = {
-"RESET": SubResource("Animation_qjw5m"),
-"death": SubResource("Animation_vgtn0"),
-"shoot": SubResource("Animation_t88kd")
+&"RESET": SubResource("Animation_qjw5m"),
+&"death": SubResource("Animation_vgtn0"),
+&"shoot": SubResource("Animation_t88kd")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rtbfy"]
@@ -204,7 +204,7 @@ width_curve = SubResource("Curve_vedpx")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D"]
 libraries = {
-"": SubResource("AnimationLibrary_iw6pf")
+&"": SubResource("AnimationLibrary_iw6pf")
 }
 
 [node name="Area2D" type="Area2D" parent="Node2D"]

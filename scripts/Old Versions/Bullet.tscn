@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cd4b8sp3k1lcf"]
 
-[ext_resource type="Script" path="res://scripts/Bullet.gd" id="1_yvasr"]
+[ext_resource type="Script" uid="uid://ch4xhifhd4tdx" path="res://scripts/Bullet.gd" id="1_yvasr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v2mnj"]
 size = Vector2(5, 5)
@@ -50,7 +50,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iw6pf"]
 _data = {
-"shoot": SubResource("Animation_t88kd")
+&"shoot": SubResource("Animation_t88kd")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rtbfy"]

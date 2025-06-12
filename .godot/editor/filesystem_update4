@@ -1,9 +1,12 @@
-res://Levels/test_level.tscn
+res://scripts/SpecialObjects/Conveyor/Conveyor.tscn
 res://assets/Tilesets/Middleground.tres
 res://characters/Player/playerSprite.tres
 res://assets/Tilesets/Background.tres
-res://scripts/SpecialObjects/Conveyor/Conveyor.gdshader
-res://scripts/CharacterBody2D.gd
+res://scripts/SpecialObjects/Conveyor/ConveyorOLD.gdshader
+res://addons/eye_dropper/eye_dropper.gdshader
+res://scripts/SpecialObjects/Conveyor/Conveyor.gd
+res://addons/eye_dropper/README.md
+res://Levels/test_level.tscn
 res://characters/Player/player.tscn
 res://Levels/levelSelect.tscn
 res://scripts/GUI.tscn
@@ -11,5 +14,5 @@ res://Levels/Prototype2.tscn
 res://scripts/shotgun_particles.tscn
 res://scripts/Bullet.tscn
 res://scripts/SpecialObjects/Spring/Spring.tscn
-res://scripts/SpecialObjects/Conveyor/Conveyor.tscn
-res://scripts/Libraries/GeneralLib.gd
+res://scripts/CharacterBody2D.gd
+res://scripts/SpecialObjects/Conveyor/ConveyorPlayer.gd
