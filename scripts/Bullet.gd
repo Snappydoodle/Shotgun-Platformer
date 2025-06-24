@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var trail = $Node2D/Line2D
 @onready var anim_player = $Node2D/AnimationPlayer
+#@onready var trail3D = $Node2D/Line3D
 
 @export var isTesting : bool = false
 @export var speed : float = 15.0
@@ -14,12 +15,16 @@ var bulletDirection : Vector2 = Vector2(1,1)
 var lastSpringDirection : Vector2i
 var ranOnce : bool = false
 
+var mainScale : float
+
+
 const TILESET_LIB = preload("res://scripts/Libraries/TilesetLib.gd")
 
 var queue : Array
 
 func _ready():
 	
+	#trail.reparent(get_parent()) 
 	#sets the speed of the bullet
 	randomize()
 	if isTesting:
@@ -29,6 +34,9 @@ func _ready():
 	
 	#flashes the bullet white
 	anim_player.play("shoot")
+	
+	#sets trail width
+	trail.width = 25
 	pass # Replace with function body.
 	
 	
@@ -36,7 +44,6 @@ func global_to_local_pos(global_pos: Vector2) -> Vector2:
 	return global_pos + position
 	pass
 func _physics_process(delta):
-	
 	#sets velocity of bullet based on speed
 	#DO NOT MOVE TO _ready(), IT WILL BREAK
 	if not ranOnce:
@@ -69,9 +76,10 @@ func _physics_process(delta):
 	else:
 		rotation = atan(velocity.y / velocity.x)
 	
-	
 	#detects if hit another hitbox
+	velocity *= mainScale
 	if move_and_collide(velocity):
+		velocity /= mainScale
 		if touchedSpringRecently:
 			
 			#teleports bullet outside of spring to prevent firing multiple times if the bullet has touched a spring recently
@@ -82,6 +90,9 @@ func _physics_process(delta):
 		else:
 			#despawns bullet if touches wall
 			despawnBullet()
+	else:
+		velocity /= mainScale
+
 	
 	createTrail()
 

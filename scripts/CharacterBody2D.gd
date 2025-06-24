@@ -23,12 +23,12 @@ signal goalTouched
 #@export var extraAirResistance`Threshold : float = 750
 
  #Your motherings ssss read
-@onready var rootNode = get_node("/root/Node2D")
+@onready var rootNode = get_parent().get_parent().get_parent() #get_node("/root/Node2D")
 @onready var bulletsFired = rootNode.bulletsFired
 @onready var timeElapsed = rootNode.timeElapsed
 @onready var startTimer = rootNode.startTimer
 @onready var Filepath = rootNode.scene_file_path
-@onready var camera = rootNode.get_node("Camera2D")
+@onready var camera = rootNode.get_node("Camera3D")
 
 var SHOTGUN_PARTICLES = preload("res://scripts/shotgun_particles.tscn")
 var BULLET = preload("res://scripts/Bullet.tscn")
@@ -61,6 +61,8 @@ var enableRotation : bool = true
 @onready var gun_sprite : AnimatedSprite2D = $Gun/Offset/GunSprite
 @onready var gun_animation_player : AnimationPlayer = $Gun/GunAnimationPlayer
 
+@onready var mainScale : float = get_parent().scale.x
+
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var animation_locked : bool = false
 var direction : Vector2 = Vector2.ZERO
@@ -79,7 +81,7 @@ var specialTilesDict : Dictionary
 var testingData : Dictionary = {"velocityLaunch" : [],
 								"extraVelocity" : []}
 
-@onready var tileMap = get_node("/root/Node2D/Level/TileMap")
+@onready var tileMap = get_node("/root/Node3D/MainSubviewport/TileMap")
 
 
 func getPos() -> Vector2:
@@ -180,7 +182,9 @@ func _physics_process(delta):
 	updateSpriteStretching()
 	setGameSpeed(gameSpeed)
 	
+	velocity *= mainScale
 	move_and_slide()
+	velocity /= mainScale
 	
 	var oldVelocityLaunch = velocityLaunch
 	if isPlayerStatic():
@@ -242,7 +246,7 @@ func updateTimer():
 	#updates the variable timeElapsed in the Level.gd script
 	
 	if startTimer:
-		get_node("/root/Node2D").timeElapsed = timeElapsed
+		rootNode.timeElapsed = timeElapsed
 		timeElapsed += deltaGlobal
 
 
@@ -426,10 +430,11 @@ func launchPlayer():
 	shotgun_particles.rotation = $Gun.rotation
 	
 	#shake camera
-	camera.applyShake(5, 10)
+	camera.applyShake(.5, 10)
 	
 	#creates bullets
 	if isTesting:
+		print("hi")
 		shootBullets(1,0)
 	else:
 		shootBullets(4, 15)
@@ -438,7 +443,7 @@ func launchPlayer():
 	
 	
 	#sets velocities of character to launch them based on mouse's position
-	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle)
+	velocityLaunch.x = launchMultiplier * cos(mousePlayerAngle) 
 	velocityLaunch.y = launchMultiplier * sin(mousePlayerAngle) * .75
 	
 	if sign(velocityLaunch.x * extraVelocity.x) == -1:
@@ -452,7 +457,7 @@ func launchPlayer():
 	
 	#updates amount of bullets fired
 	bulletsFired += 1
-	get_node("/root/Node2D").bulletsFired = bulletsFired
+	rootNode.bulletsFired = bulletsFired
 	
 func shootBullets(amount, spread):
 	#creates bullet objects and sets their values accordingly
@@ -469,8 +474,10 @@ func shootBullets(amount, spread):
 		add_sibling(bullet)
 		
 		#changes position and rotation of bullet
-		bullet.global_position = Vector2(position.x - cos(mousePlayerAngle) * bulletOffset * scale.x, position.y - sin(mousePlayerAngle) * bulletOffset * scale.y)
+		bullet.global_position = Vector2(global_position.x - cos(mousePlayerAngle) * bulletOffset * scale.x, global_position.y - sin(mousePlayerAngle) * bulletOffset * scale.y)
 		bullet.rotation = $Gun.rotation + deg_to_rad(randf_range(spread * -1, spread))
+		
+		bullet.mainScale = mainScale
 		
 		
 func addAirResistance():
@@ -503,10 +510,11 @@ func updateMousePosition():
 	#updates the mouse position
 	
 	#gets mouse position
-	mousePosition = get_global_mouse_position()
+	#mousePosition = get_global_mouse_position()
+	#mousePosition = get_viewport().get_mouse_position()
 	
 	#gets the angle between the mouse position and character
-	mousePlayerAngle = mousePosition.angle_to_point(position)
+	#mousePlayerAngle = mousePosition.angle_to_point(position)
 	
 	#rotates the gun
 	if enableRotation:

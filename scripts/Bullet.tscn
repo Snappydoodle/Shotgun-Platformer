@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cd4b8sp3k1lcf"]
 
-[ext_resource type="Script" uid="uid://ch4xhifhd4tdx" path="res://scripts/Bullet.gd" id="1_yvasr"]
+[ext_resource type="Script" uid="uid://dhe7jijqy3fw1" path="res://scripts/Bullet3D.gd" id="1_dtbqb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v2mnj"]
 size = Vector2(5, 5)
@@ -176,7 +176,7 @@ size = Vector2(5, 5)
 [node name="Bullet" type="CharacterBody2D"]
 scale = Vector2(1e-05, 1e-05)
 collision_layer = 16
-script = ExtResource("1_yvasr")
+script = ExtResource("1_dtbqb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_v2mnj")
@@ -198,7 +198,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Line2D" type="Line2D" parent="Node2D"]
-top_level = true
 width = 5.0
 width_curve = SubResource("Curve_vedpx")
 

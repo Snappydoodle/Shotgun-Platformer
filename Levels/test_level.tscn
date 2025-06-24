@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dcki1w6h4f4e7" path="res://assets/Tilesets/Shadow Textures.png" id="5_rwo44"]
 [ext_resource type="Script" uid="uid://dpbl4ewn8cbi2" path="res://scripts/Camera.gd" id="9_qacih"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xjtjj"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tc6tp"]
 texture = ExtResource("4_p6u2x")
 texture_region_size = Vector2i(64, 64)
 0:3/animation_columns = 2
@@ -30,9 +30,9 @@ texture_region_size = Vector2i(64, 64)
 
 [sub_resource type="TileSet" id="TileSet_qs3b4"]
 tile_size = Vector2i(64, 64)
-sources/0 = SubResource("TileSetAtlasSource_xjtjj")
+sources/0 = SubResource("TileSetAtlasSource_tc6tp")
 
-[sub_resource type="Shader" id="Shader_lvhed"]
+[sub_resource type="Shader" id="Shader_k8b6b"]
 code = "/*shader_type canvas_item;
 void vertex() {
 	// Called for every vertex the material is visible on.
@@ -59,10 +59,10 @@ void fragment(){
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cxrp3"]
-shader = SubResource("Shader_lvhed")
+shader = SubResource("Shader_k8b6b")
 shader_parameter/lod = 3.0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_51asa"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lx7qo"]
 texture = ExtResource("5_rwo44")
 0:0/0 = 0
 1:0/0 = 0
@@ -74,7 +74,7 @@ texture = ExtResource("5_rwo44")
 5:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_75gur"]
-sources/0 = SubResource("TileSetAtlasSource_51asa")
+sources/0 = SubResource("TileSetAtlasSource_lx7qo")
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_tqvhl")
